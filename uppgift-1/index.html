@@ -16,7 +16,6 @@
   <nav class="navbar navbar-dark bg-info">
     <h1 class="m-auto navbar-brand headline">Regstrering Förmulär</h1>
   </nav>
-  <div id="result" class="container mt-5 text-danger"></div>
   <!-- The start of the Form -->
   <div class="mt-5">
     <form class="container">
@@ -24,26 +23,30 @@
         <input type="text" id="userId" class="form-control" />
         <label class="form-label" for="userId">User Id</label>
       </div>
-      <div class="row mb-4">
+      <div id="idError"></div>
+      <div class="row mb-4 mt-3">
         <div class="col">
           <div class="form-outline">
             <input type="text" id="firstName" class="form-control" />
             <label class="form-label" for="firstName">First name</label>
           </div>
+          <div id="firstNameError"></div>
         </div>
         <div class="col">
           <div class="form-outline">
             <input type="text" id="lastName" class="form-control" />
             <label class="form-label" for="lastName">Last name</label>
           </div>
+          <div id="lastNameError"></div>
         </div>
       </div>
   
       <!-- Email input -->
-      <div class="form-outline mb-4">
+      <div class="form-outline ">
         <input type="email" id="email" class="form-control" />
-        <label class="form-label" for="email">Email address</label>
+        <label class="form-label" for="email">Email address</label>   
       </div>
+      <div id="emailError" class="mb-4"></div>
       <!-- Submit button -->
       <button type="submit" id="submitBtn" class="btn btn-info btn-block mb-4">Submit</button>
     </form>

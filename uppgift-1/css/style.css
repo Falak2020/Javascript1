@@ -1,3 +1,14 @@
 .headline{
     font-size: 2.5rem;
 }
+.displayName{
+    font-size: 1.5rem;
+   
+}
+.emailStyle{
+    font-size: 0.9em;
+}
+.error{
+    font-size: 0.7rem;
+    color: red;
+}
