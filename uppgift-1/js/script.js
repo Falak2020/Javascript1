@@ -17,7 +17,7 @@ const edit = document.querySelector('#editBtn')
 const listUsers = () => {
     output.innerHTML = ''
     usersList.forEach(user => {
-        output.innerHTML+=`<div  id="${user.Id}"  class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1">${user.FirstName} ${user.LastName} <button  class="btn btn-danger px-3">Delete</button> </div>`
+        output.innerHTML+=`<div  id="${user.Id}"  class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle">${user.Email} </div></div><button  class="btn btn-danger px-3">Delete</button><button  class="btn btn-success px-3">Edit</button></div>`
     })
 }
 submitBtn.addEventListener('click', (e) => {
@@ -73,9 +73,30 @@ submitBtn.addEventListener('click', (e) => {
     }
 
 })
- output.addEventListener('click',(e)=>{
+
+output.addEventListener('click',(e)=>{
+   const button=e.target
+   if(button.textContent==='Delete'){
     usersList = usersList.filter(user => user.Id !== e.target.parentNode.id)
     listUsers()
+   }
+   else{
+       usersList.forEach(user=>{
+       id.value=user.Id
+       firstName.value=user.FirstName
+       lastName.value=user.LastName
+       email.value=user.Email
+       let index=usersList.indexOf(user)
+       console.log(index)
+       })
+      
+   }
+    
 }) 
+/* edit.addEventListener('click',(e)=>{
+   
+   
+   
+}) */
 
 listUsers()
