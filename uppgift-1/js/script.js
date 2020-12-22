@@ -17,13 +17,19 @@ const edit = document.querySelector('#editBtn')
 const listUsers = () => {
     output.innerHTML = ''
     usersList.forEach(user => {
-        output.innerHTML+=`<div  id="${user.Id}"  class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle">${user.Email} </div></div><button  class="btn btn-danger px-3">Delete</button><button  class="btn btn-success px-3">Edit</button></div>`
+        output.innerHTML+=`<div  id="${user.Id}"class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle">${user.Email} </div></div><button class="btn btn-danger px-3">Delete</button><button  class="btn btn-success px-3">Edit</button></div>`
     })
 }
-submitBtn.addEventListener('click', (e) => {
-    e.preventDefault()
+function ValidateEmail(string){
+    if(string.includes('ä')||string.includes('å') ||string.includes('ö'))
+    return false
+    else
+    return true
+}
+function Validateform(){
     if (firstName.value !== '' && lasName.value !== '' && id.value !== '' && email.value !== '') {
-        if (firstName.value.length >= 3 && lasName.value.length >= 3) {
+        console.log( email.value)
+        if (firstName.value.length >= 3 && lasName.value.length >= 3 && ValidateEmail(email.value)) {
             firstName.classList.remove('is-invalid')
             lastName.classList.remove('is-invalid')
             id.classList.remove('is-invalid')
@@ -34,9 +40,22 @@ submitBtn.addEventListener('click', (e) => {
                 LastName: lasName.value,
                 Email: email.value
             }
-            usersList.push(newUser);
+            if(usersList.length==0){
+                usersList.push(newUser);
+            }else {
+                for(i=0;i<usersList.length;i++){
+                    if(usersList[i].Id===newUser.Id)
+                    {
+                        usersList.splice(i,1,newUser)
+                    }
+                    else{
+                        usersList.push(newUser); 
+                    }
+                } 
+            }
+           
+           
             listUsers()
-            console.log(usersList)
             firstName.value = ''
             lastName.value = ''
             id.value = ''
@@ -71,7 +90,17 @@ submitBtn.addEventListener('click', (e) => {
         email.classList.add('is-invalid')
         emailError.innerHTML = '<div class="error">please fill out this field</div>'
     }
+}
+submitBtn.addEventListener('click', (e) => {
+    e.preventDefault()
+    if(submitBtn.textContent==='Submit'){
+    Validateform()
+    }else if(submitBtn.textContent==='Save'){
+        Validateform()
+        submitBtn.textContent='Submit'
 
+    }
+    
 })
 
 output.addEventListener('click',(e)=>{
@@ -87,16 +116,13 @@ output.addEventListener('click',(e)=>{
        lastName.value=user.LastName
        email.value=user.Email
        let index=usersList.indexOf(user)
-       console.log(index)
-       })
-      
+       usersList.splice(index,1)
+       listUsers()
+       submitBtn.textContent='Save'
+       }) 
    }
     
 }) 
-/* edit.addEventListener('click',(e)=>{
-   
-   
-   
-}) */
-
+  
 listUsers()
+
