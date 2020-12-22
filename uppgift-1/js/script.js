@@ -121,14 +121,16 @@ output.addEventListener('click',(e)=>{
     displayUsers()
    }
    else if(button.textContent==='Edit'){
+
        usersList.forEach(user=>{
+    if(user.Id===e.target.parentNode.parentNode.id){
        firstName.value=user.FirstName
        lastName.value=user.LastName
        email.value=user.Email
        let index=usersList.indexOf(user)
        displayUsers()
        submitBtn.textContent='Save'
-       }) 
+    } })  
    }
     
 }) 
