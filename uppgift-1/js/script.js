@@ -14,6 +14,7 @@ const emailError = document.querySelector('#emailError')
 const idError = document.querySelector('#idError')
 const deletBtn = document.querySelector('#deleteBtn')
 const edit = document.querySelector('#editBtn')
+const userError=document.querySelector('#userError')
 
 const displayUsers = () => {
     output.innerHTML = ''
@@ -27,11 +28,18 @@ function ValidateEmail(string){
     else
     return false
 }
-
+function ValidateUser(string1,string2,string3){
+    for(j=0;j<usersList.length;j++){
+        if(usersList[j].FirstName===string1 &&usersList[j].LastName===string2 && usersList[j].Email===string3)
+        return true
+        else
+        return false
+    }
+   
+}
 function Validateform(){
     if (firstName.value !== '' && lasName.value !== ''  && email.value !== '') {
-        if (firstName.value.length >= 3 && lasName.value.length >= 3 && !ValidateEmail(email.value)) {
-            
+        if (firstName.value.length >= 3 && lasName.value.length >= 3 && !ValidateEmail(email.value) && !ValidateUser(firstName.value,lastName.value,email.value)) {
             firstName.classList.remove('is-invalid')
             lastName.classList.remove('is-invalid')
             email.classList.remove('is-invalid')
@@ -69,9 +77,12 @@ function Validateform(){
             lastName.classList.add('is-invalid')
             lastNameError.innerHTML = '<div class="error">The last name must be more than 2 char</div>'
             lastName.value = ''
-        }else{
+        }else if(ValidateEmail(email.value)){
             emailError.innerHTML='<div class="error">The email should not contain ä,å,ö</div>'
             email.value=''
+        }else {
+            userError.innerHTML='<div class="error">The user is already existed</div>'
+            
         }
 
     }
