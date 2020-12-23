@@ -1,5 +1,6 @@
 
 let usersList = []
+const formId=document.querySelector('#formId')
 const firstName = document.querySelector('#firstName');
 const lasName = document.querySelector('#lastName');
 // const id = document.querySelector('#userId');
@@ -30,47 +31,36 @@ function ValidateEmail(string){
 function Validateform(){
     if (firstName.value !== '' && lasName.value !== ''  && email.value !== '') {
         if (firstName.value.length >= 3 && lasName.value.length >= 3 && !ValidateEmail(email.value)) {
+            
             firstName.classList.remove('is-invalid')
             lastName.classList.remove('is-invalid')
-            // id.classList.remove('is-invalid')
             email.classList.remove('is-invalid')
-            let newUser = {
-                Id: Date.now().toString(),
-                FirstName: firstName.value,
-                LastName: lastName.value,
-                Email: email.value
-            }
-            console.log(usersList.length)
-            if(submitBtn.textContent=='Save'){
-               let myindex=usersList.indexOf(newUser)
-                usersList.splice(myindex,1,newUser)
+                let newUser = {
+                    Id: Date.now().toString(),
+                    FirstName: firstName.value,
+                    LastName: lastName.value,
+                    Email: email.value
                 }
-            
-            else
-            usersList.push(newUser)
-           /*  if(usersList.length===0){
-                usersList.push(newUser);
-            }else {
+            if(submitBtn.textContent=='Save'){
+                const inputid=document.getElementById('#idInput')
                 for(let i=0;i<usersList.length;i++){
-                    if(usersList[i].Id===newUser.Id)
+                    if(usersList[i].Id===inputid.value)
                     {
                         usersList.splice(i,1,newUser)
                     }
-                    else{
-                        usersList.push(newUser); 
-                    }
-                } 
-            } */
-            console.log(usersList)
+                }
+                inputid.remove()
+            }
+            
+            else
+            usersList.push(newUser)
             displayUsers()
             firstName.value = ''
             lastName.value = ''
-            // id.value = ''
             email.value = ''
             firstNameError.innerHTML = ''
             lastNameError.innerHTML = ''
             emailError.innerHTML = ''
-            // idError.innerHTML = ''
         } else if (firstName.value.length < 3) {
             firstName.classList.add('is-invalid')
             firstNameError.innerHTML = '<div class="error">The first name must be more than 2 char</div>'
@@ -88,16 +78,10 @@ function Validateform(){
     else if (firstName.value === '') {
         firstName.classList.add('is-invalid')
         firstNameError.innerHTML = '<div class="error">please fill out this field</div>'
-    }
-    else if (lastName.value === '') {
+    } else if (lastName.value === '') {
         lastName.classList.add('is-invalid')
         lastNameError.innerHTML = '<div class="error">please fill out this field</div>'
-    }
-   /*  else if (id.value === '') {
-        id.classList.add('is-invalid')
-        idError.innerHTML = '<div class="error">please fill out this field</div>'
-    } */
-    else if (email.value === '') {
+    }else if (email.value === '') {
         email.classList.add('is-invalid')
         emailError.innerHTML = '<div class="error">please fill out this field</div>'
     }
@@ -128,6 +112,11 @@ output.addEventListener('click',(e)=>{
        lastName.value=user.LastName
        email.value=user.Email
        let index=usersList.indexOf(user)
+       const input=document.createElement('input')
+       input.type='text'
+       input.id='#idInput'
+       input.value=user.Id
+       formId.appendChild(input)
        displayUsers()
        submitBtn.textContent='Save'
     } })  
