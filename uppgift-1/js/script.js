@@ -29,7 +29,7 @@ function ValidateEmail(string){
     return false
 }
 function ValidateUser(string1,string2,string3){
-    for(j=0;j<usersList.length;j++){
+    for(let j=0;j<usersList.length;j++){
         if(usersList[j].FirstName===string1 &&usersList[j].LastName===string2 && usersList[j].Email===string3)
         return true
         else
@@ -51,6 +51,7 @@ function Validateform(){
                 }
             if(submitBtn.textContent=='Save'){
                 const inputid=document.getElementById('#idInput')
+                const labelId=document.getElementById('#labelId')
                 for(let i=0;i<usersList.length;i++){
                     if(usersList[i].Id===inputid.value)
                     {
@@ -58,6 +59,7 @@ function Validateform(){
                     }
                 }
                 inputid.remove()
+                labelId.remove()
             }
             
             else
@@ -123,10 +125,14 @@ output.addEventListener('click',(e)=>{
        lastName.value=user.LastName
        email.value=user.Email
        let index=usersList.indexOf(user)
+       const label=document.createElement('label')
+       label.id='#labelId'
+       label.innerHTML="id"
        const input=document.createElement('input')
        input.type='text'
        input.id='#idInput'
        input.value=user.Id
+       formId.appendChild(label)
        formId.appendChild(input)
        displayUsers()
        submitBtn.textContent='Save'
