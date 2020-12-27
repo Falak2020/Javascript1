@@ -131,6 +131,7 @@ output.addEventListener('click',(e)=>{
        const input=document.createElement('input')
        input.type='text'
        input.id='#idInput'
+       input.readOnly=true
        input.value=user.Id
        formId.appendChild(label)
        formId.appendChild(input)
