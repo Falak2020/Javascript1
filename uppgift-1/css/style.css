@@ -13,6 +13,7 @@ i{
 }
 .emailStyle{
     font-size: 0.9em;
+    text-decoration: underline;
 }
 .error{
     font-size: 0.7rem;
