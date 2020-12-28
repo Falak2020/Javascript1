@@ -21,7 +21,7 @@ const displayUsers = () => {
         output.innerHTML += `<div  id="${user.Id}"class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle"><a href="#">${user.Email}</a> </div></div><div><button class="btn btn-danger px-3">Delete</button><button  class="btn btn-info px-3 ms-4">Edit</button></div></div>`
     })
 }
-//The email should not have ä,å,ö
+//The email should not have ä,å,ö 
 function ValidateEmail(string) {
     if (!(string.includes('ä')) && !(string.includes('å')) && !(string.includes('ö'))&&(string.indexOf('@')>0)){
         if ((string.charAt(string.length-4)!='.') && (string.charAt(string.length-3)!='.')) {
