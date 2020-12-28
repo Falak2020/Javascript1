@@ -49,12 +49,14 @@ function Validateform() {
             firstName.classList.remove('is-invalid')
             lastName.classList.remove('is-invalid')
             email.classList.remove('is-invalid')
+            console.log(firstName.value.charAt(0).toUpperCase()+firstName.value.substring(1))
             let newUser = {
                 Id: Date.now().toString(),
-                FirstName: firstName.value,
-                LastName: lastName.value,
+                FirstName: firstName.value.charAt(0).toUpperCase()+firstName.value.substring(1),
+                LastName: lastName.value.charAt(0).toUpperCase()+lastName.value.substring(1),
                 Email: email.value
             }
+           
             if (submitBtn.textContent == 'Save') {
                 const inputid = document.getElementById('#idInput')
                 const labelId = document.getElementById('#labelId')
