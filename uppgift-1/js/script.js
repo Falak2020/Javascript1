@@ -18,27 +18,34 @@ const userError = document.querySelector('#userError')
 const displayUsers = () => {
     output.innerHTML = ''
     usersList.forEach(user => {
-        output.innerHTML += `<div  id="${user.Id}"class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle"><a href="#">${user.Email}</a> </div></div><div><button class="btn btn-danger px-3">Delete</button><button  class="btn btn-success px-3 ms-4">Edit</button></div></div>`
+        output.innerHTML += `<div  id="${user.Id}"class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle"><a href="#">${user.Email}</a> </div></div><div><button class="btn btn-danger px-3">Delete</button><button  class="btn btn-info px-3 ms-4">Edit</button></div></div>`
     })
 }
+//The email should not have ä,å,ö
 function ValidateEmail(string) {
-    if (string.includes('ä') || string.includes('å') || string.includes('ö'))
-        return true
-    else
-        return false
+    if (!(string.includes('ä')) && !(string.includes('å')) && !(string.includes('ö'))&&(string.indexOf('@')>0)){
+        if ((string.charAt(string.length-4)!='.') && (string.charAt(string.length-3)!='.')) {
+            return false;
+        } else return true
+    }else return false  
+    
 }
-function ValidateUser(string1, string2, string3) {
+// Two users must not have the same email
+function ValidateUser(newUserEmail) {
     for (let j = 0; j < usersList.length; j++) {
-        if (usersList[j].FirstName === string1 && usersList[j].LastName === string2 && usersList[j].Email === string3)
+        if(submitBtn.textContent==='Submit')
+        {
+            if ( usersList[j].Email === newUserEmail)
             return true
         else
             return false
+        }else
+        return false  
     }
-
 }
 function Validateform() {
     if (firstName.value !== '' && lasName.value !== '' && email.value !== '') {
-        if (firstName.value.length >= 3 && lasName.value.length >= 3 && !ValidateEmail(email.value) && !ValidateUser(firstName.value, lastName.value, email.value)) {
+        if (firstName.value.length >= 3 && lasName.value.length >= 3 && ValidateEmail(email.value) && !ValidateUser(email.value)) {
             firstName.classList.remove('is-invalid')
             lastName.classList.remove('is-invalid')
             email.classList.remove('is-invalid')
@@ -53,6 +60,7 @@ function Validateform() {
                 const labelId = document.getElementById('#labelId')
                 for (let i = 0; i < usersList.length; i++) {
                     if (usersList[i].Id === inputid.value) {
+                        newUser.Id=inputid.value///Because I do not want new id I will take the old one
                         usersList.splice(i, 1, newUser)
                     }
                 }
@@ -72,32 +80,33 @@ function Validateform() {
             userError.innerHTML = ''
         } else if (firstName.value.length < 3) {
             firstName.classList.add('is-invalid')
-            firstNameError.innerHTML = '<div class="error">The first name must be more than 2 char</div>'
+            firstNameError.innerHTML = '<div class="text-danger error">The first name must be more than 2 character</div>'
             firstName.value = ''
         } else if (lastName.value.length < 3) {
             lastName.classList.add('is-invalid')
-            lastNameError.innerHTML = '<div class="error">The last name must be more than 2 char</div>'
+            lastNameError.innerHTML = '<div class="text-danger error">The last name must be more than 2 character</div>'
             lastName.value = ''
-        } else if (ValidateEmail(email.value)) {
-            emailError.innerHTML = '<div class="error">The email should not contain ä,å,ö</div>'
+        } else if (!ValidateEmail(email.value)) {
+            emailError.innerHTML = '<div class="text-danger error">The email is not valid</div>'
             email.value = ''
         } else {
-            userError.innerHTML = '<div class="error">The user is already existed</div>'
+            userError.innerHTML = '<div class="text-danger error">The user is already existed</div>'
 
         }
 
     }
     else if (firstName.value === '') {
         firstName.classList.add('is-invalid')
-        firstNameError.innerHTML = '<div class="error">please fill out this field</div>'
+        firstNameError.innerHTML = '<div class="text-danger error">please fill out this field</div>'
     } else if (lastName.value === '') {
         lastName.classList.add('is-invalid')
-        lastNameError.innerHTML = '<div class="error">please fill out this field</div>'
+        lastNameError.innerHTML = '<div class="text-danger error">please fill out this field</div>'
     } else if (email.value === '') {
         email.classList.add('is-invalid')
-        emailError.innerHTML = '<div class="error">please fill out this field</div>'
+        emailError.innerHTML = '<div class="text-danger error">please fill out this field</div>'
     }
 }
+// Adding users to the list
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault()
     if (submitBtn.textContent === 'Submit') {
@@ -109,7 +118,7 @@ submitBtn.addEventListener('click', (e) => {
     }
 
 })
-
+// Delete user from the list or change the information of the user
 output.addEventListener('click', (e) => {
     const button = e.target
     if (button.textContent === 'Delete') {
@@ -125,7 +134,8 @@ output.addEventListener('click', (e) => {
                 let index = usersList.indexOf(user)
                 const label = document.createElement('label')
                 label.id = '#labelId'
-                label.innerHTML = "id"
+                label.classList="me-3"
+                label.innerHTML = "Id"
                 const input = document.createElement('input')
                 input.type = 'text'
                 input.id = '#idInput'
@@ -134,7 +144,7 @@ output.addEventListener('click', (e) => {
                 formId.appendChild(label)
                 formId.appendChild(input)
                 displayUsers()
-                submitBtn.textContent = 'Save'
+                submitBtn.textContent = 'Save' 
             }
         })
     }
