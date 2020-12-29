@@ -15,12 +15,12 @@ const deletBtn = document.querySelector('#deleteBtn')
 const edit = document.querySelector('#editBtn')
 const userError = document.querySelector('#userError')
 let array=[]
-onload=()=>{
+onload=()=>{ 
+    // console.log(localStorage.getItem("array"))
     usersList = JSON.parse(localStorage.getItem("array"));
-    // console.log(array)
     displayUsers()
 }
-
+// Veiw the user list
 const displayUsers = () => {
     output.innerHTML = ''
     usersList.forEach(user => {
@@ -145,25 +145,19 @@ output.addEventListener('click', (e) => {
                 firstName.value = user.FirstName
                 lastName.value = user.LastName
                 email.value = user.Email
-                // let index = usersList.indexOf(user)
                 localStorage.setItem('editId',user.Id)
-                // const label = document.createElement('label')
-                // label.id = '#labelId'
-                // label.classList="me-3"
-                // label.innerHTML = "Id"
-                // const input = document.createElement('input')
-                // input.type = 'text'
-                // input.id = '#idInput'
-                // input.readOnly = true
-                // input.value = user.Id
-                // formId.appendChild(label)
-                // formId.appendChild(input)
-                displayUsers()
                 submitBtn.textContent = 'Save' 
+                button.textContent='Ignore'
+                button.classList='btn  px-3 ms-4 btn-success'
+                console.log(button.textContent)
+                
             }
         })
+    }else if (button.textContent === 'Ignore'){
+        button.textContent='Edit'
+        button.classList='btn px-3 ms-4 btn-info'
     }
 
 })
 
-displayUsers()
+
