@@ -14,6 +14,12 @@ const idError = document.querySelector('#idError')
 const deletBtn = document.querySelector('#deleteBtn')
 const edit = document.querySelector('#editBtn')
 const userError = document.querySelector('#userError')
+let array=[]
+onload=()=>{
+    usersList = JSON.parse(localStorage.getItem("array"));
+    // console.log(array)
+    displayUsers()
+}
 
 const displayUsers = () => {
     output.innerHTML = ''
@@ -49,7 +55,6 @@ function Validateform() {
             firstName.classList.remove('is-invalid')
             lastName.classList.remove('is-invalid')
             email.classList.remove('is-invalid')
-            console.log(firstName.value.charAt(0).toUpperCase()+firstName.value.substring(1))
             let newUser = {
                 Id: Date.now().toString(),
                 FirstName: firstName.value.charAt(0).toUpperCase()+firstName.value.substring(1),
@@ -58,20 +63,25 @@ function Validateform() {
             }
            
             if (submitBtn.textContent == 'Save') {
-                const inputid = document.getElementById('#idInput')
-                const labelId = document.getElementById('#labelId')
+                // const inputid = document.getElementById('#idInput')
+                // const labelId = document.getElementById('#labelId')
+                const oldId=localStorage.getItem('editId')
+                // console.log(myId)
                 for (let i = 0; i < usersList.length; i++) {
-                    if (usersList[i].Id === inputid.value) {
-                        newUser.Id=inputid.value///Because I do not want new id I will take the old one
+                    if (usersList[i].Id === oldId) {
+                        newUser.Id=oldId///Because I do not want new id I will take the old one
                         usersList.splice(i, 1, newUser)
                     }
                 }
-                inputid.remove()
-                labelId.remove()
+                // inputid.remove()
+                // labelId.remove()
+                localStorage.removeItem('editId')
             }
-
-            else
+            else{
                 usersList.push(newUser)
+                
+            }
+            localStorage.setItem("array", JSON.stringify(usersList)); 
             displayUsers()
             firstName.value = ''
             lastName.value = ''
@@ -125,6 +135,8 @@ output.addEventListener('click', (e) => {
     const button = e.target
     if (button.textContent === 'Delete') {
         usersList = usersList.filter(user => user.Id !== e.target.parentNode.parentNode.id)
+        localStorage.removeItem('array')
+        localStorage.setItem("array", JSON.stringify(usersList));
         displayUsers()
     }
     else if (button.textContent === 'Edit') {
@@ -133,18 +145,19 @@ output.addEventListener('click', (e) => {
                 firstName.value = user.FirstName
                 lastName.value = user.LastName
                 email.value = user.Email
-                let index = usersList.indexOf(user)
-                const label = document.createElement('label')
-                label.id = '#labelId'
-                label.classList="me-3"
-                label.innerHTML = "Id"
-                const input = document.createElement('input')
-                input.type = 'text'
-                input.id = '#idInput'
-                input.readOnly = true
-                input.value = user.Id
-                formId.appendChild(label)
-                formId.appendChild(input)
+                // let index = usersList.indexOf(user)
+                localStorage.setItem('editId',user.Id)
+                // const label = document.createElement('label')
+                // label.id = '#labelId'
+                // label.classList="me-3"
+                // label.innerHTML = "Id"
+                // const input = document.createElement('input')
+                // input.type = 'text'
+                // input.id = '#idInput'
+                // input.readOnly = true
+                // input.value = user.Id
+                // formId.appendChild(label)
+                // formId.appendChild(input)
                 displayUsers()
                 submitBtn.textContent = 'Save' 
             }
