@@ -16,7 +16,6 @@ const edit = document.querySelector('#editBtn')
 const userError = document.querySelector('#userError')
 let array=[]
 onload=()=>{ 
-    // console.log(localStorage.getItem("array"))
     usersList = JSON.parse(localStorage.getItem("array"));
     displayUsers()
 }
@@ -127,18 +126,18 @@ submitBtn.addEventListener('click', (e) => {
         Validateform()
         submitBtn.textContent = 'Submit'
 
-    }
+    }})
 
-})
-// Delete user from the list or change the information of the user
 output.addEventListener('click', (e) => {
     const button = e.target
+    // Delete user from the list or change the information of the user
     if (button.textContent === 'Delete') {
         usersList = usersList.filter(user => user.Id !== e.target.parentNode.parentNode.id)
         localStorage.removeItem('array')
         localStorage.setItem("array", JSON.stringify(usersList));
         displayUsers()
     }
+    //Edit user in the list
     else if (button.textContent === 'Edit') {
         usersList.forEach(user => {
             if (user.Id === e.target.parentNode.parentNode.id) {
@@ -148,12 +147,12 @@ output.addEventListener('click', (e) => {
                 localStorage.setItem('editId',user.Id)
                 submitBtn.textContent = 'Save' 
                 button.textContent='Ignore'
-                button.classList='btn  px-3 ms-4 btn-success'
-                console.log(button.textContent)
-                
+                button.classList='btn  px-3 ms-4 btn-success'    
             }
         })
-    }else if (button.textContent === 'Ignore'){
+    }
+    //Ignore editing and come back to the first state
+    else if (button.textContent === 'Ignore'){
         button.textContent='Edit'
         button.classList='btn px-3 ms-4 btn-info'
     }
