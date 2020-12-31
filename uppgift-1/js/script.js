@@ -155,6 +155,10 @@ output.addEventListener('click', (e) => {
     else if (button.textContent === 'Ignore'){
         button.textContent='Edit'
         button.classList='btn px-3 ms-4 btn-info'
+        submitBtn.textContent = 'Submit' 
+        firstName.value = ''
+        lastName.value = ''
+         email.value = ''
     }
 
 })
