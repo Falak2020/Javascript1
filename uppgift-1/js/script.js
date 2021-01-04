@@ -23,7 +23,7 @@ onload=()=>{
 const displayUsers = () => {
     output.innerHTML = ''
     usersList.forEach(user => {
-        output.innerHTML += `<div  id="${user.Id}"class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle"><a href="#">${user.Email}</a> </div></div><div><button class="btn btn-danger px-3">Delete</button><button  class="btn btn-info px-3 ms-4">Edit</button></div></div>`
+        output.innerHTML += `<div  id="${user.Id}"class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle"><a href="mailto:${user.Email}">${user.Email}</a> </div></div><div><button class="btn btn-danger px-3">Delete</button><button  class="btn btn-info px-3 ms-4">Edit</button></div></div>`
     })
 }
 //The email should not have ä,å,ö 
@@ -72,13 +72,10 @@ function Validateform() {
                         usersList.splice(i, 1, newUser)
                     }
                 }
-                // inputid.remove()
-                // labelId.remove()
                 localStorage.removeItem('editId')
             }
             else{
-                usersList.push(newUser)
-                
+                usersList.push(newUser)    
             }
             localStorage.setItem("array", JSON.stringify(usersList)); 
             displayUsers()
