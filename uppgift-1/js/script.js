@@ -1,4 +1,4 @@
-
+// Variables
 let usersList = []
 const formId = document.querySelector('#formId')
 const firstName = document.querySelector('#firstName')
@@ -15,6 +15,8 @@ const deletBtn = document.querySelector('#deleteBtn')
 const edit = document.querySelector('#editBtn')
 const userError = document.querySelector('#userError')
 let array=[]
+// Functions 
+
 onload=()=>{ 
     usersList = JSON.parse(localStorage.getItem("array"));
     displayUsers()
@@ -32,8 +34,7 @@ function ValidateEmail(string) {
         if ((string.charAt(string.length-4)!='.') && (string.charAt(string.length-3)!='.')) {
             return false;
         } else return true
-    }else return false  
-    
+    }else return false     
 }
 // Two users must not have the same email
 function ValidateUser(newUserEmail) {
@@ -73,6 +74,7 @@ function Validateform() {
                     }
                 }
                 localStorage.removeItem('editId')
+                submitBtn.textContent = 'Submit'
             }
             else{
                 usersList.push(newUser)    
@@ -117,13 +119,8 @@ function Validateform() {
 // Adding users to the list
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault()
-    if (submitBtn.textContent === 'Submit') {
-        Validateform()
-    } else if (submitBtn.textContent === 'Save') {
-        Validateform()
-        submitBtn.textContent = 'Submit'
-
-    }})
+    Validateform()
+})
 
 output.addEventListener('click', (e) => {
     const button = e.target
@@ -138,7 +135,8 @@ output.addEventListener('click', (e) => {
     else if (button.textContent === 'Edit') {
         usersList.forEach(user => {
             if (user.Id === e.target.parentNode.parentNode.id) {
-                firstName.value = user.FirstName
+
+                firstName.value= user.FirstName
                 lastName.value = user.LastName
                 email.value = user.Email
                 localStorage.setItem('editId',user.Id)
@@ -155,7 +153,7 @@ output.addEventListener('click', (e) => {
         submitBtn.textContent = 'Submit' 
         firstName.value = ''
         lastName.value = ''
-         email.value = ''
+        email.value = ''
     }
 
 })
