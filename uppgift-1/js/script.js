@@ -14,14 +14,14 @@ const emailError = document.querySelector('#emailError')
 // const deletBtn = document.querySelector('#deleteBtn')
 // const edit = document.querySelector('#editBtn')
 const userError = document.querySelector('#userError')
-let array=[]
+let array = []
 
 // Functions 
 
-onload=()=>{ 
-    usersList = JSON.parse(localStorage.getItem("array"));
-    displayUsers()
-}
+// onload=()=>{ 
+//     usersList = JSON.parse(localStorage.getItem("array"));
+//     displayUsers()
+// }
 // Veiw the user list
 const displayUsers = () => {
     output.innerHTML = ''
@@ -31,54 +31,53 @@ const displayUsers = () => {
 }
 //The email should not have ä,å,ö 
 function ValidateEmail(string) {
-    if (!(string.includes('ä')) && !(string.includes('å')) && !(string.includes('ö'))&&(string.indexOf('@')>0)){
-        if ((string.charAt(string.length-4)!='.') && (string.charAt(string.length-3)!='.')) {
+    if (!(string.includes('ä')) && !(string.includes('å')) && !(string.includes('ö')) && (string.indexOf('@') > 0)) {
+        if ((string.charAt(string.length - 4) != '.') && (string.charAt(string.length - 3) != '.')) {
             return false;
         } else return true
-    }else return false     
+    } else return false
 }
 // Two users must not have the same email
-function notValidateUser(newUserEmail) {
-    for (let j = 0; j < usersList.length; j++) {
-        if(submitBtn.textContent==='Submit')
-        {
-            if ( usersList[j].Email.toString === newUserEmail.toString){
-            return true
-            console.log('hej')
-            }   
-        else
-            return false
-        }else  if(submitBtn.textContent==='Save')
-        return false  
+function ValidateUser(newUserEmail) {
+    let j = 0
+    if (submitBtn.textContent === 'Submit') {
+        usersList.forEach(user => {
+            if (user.Email === newUserEmail)
+                j = 1
+        })
+        if (j === 1) return false
+        else return true
     }
+    else if (submitBtn.textContent === 'Save')
+        return true
 }
 function Validateform() {
     if (firstName.value !== '' && lasName.value !== '' && email.value !== '') {
-        if (firstName.value.length >= 3 && lasName.value.length >= 3 && ValidateEmail(email.value) && !notValidateUser(email.value)) {
+        if (firstName.value.length >= 3 && lasName.value.length >= 3 && ValidateEmail(email.value) && ValidateUser(email.value)) {
             firstName.classList.remove('is-invalid')
             lastName.classList.remove('is-invalid')
             email.classList.remove('is-invalid')
             let newUser = {
                 Id: Date.now().toString(),
-                FirstName: firstName.value.charAt(0).toUpperCase()+firstName.value.substring(1),
-                LastName: lastName.value.charAt(0).toUpperCase()+lastName.value.substring(1),
+                FirstName: firstName.value.charAt(0).toUpperCase() + firstName.value.substring(1),
+                LastName: lastName.value.charAt(0).toUpperCase() + lastName.value.substring(1),
                 Email: email.value
             }
             if (submitBtn.textContent === 'Save') {
-                const oldId=localStorage.getItem('editId')
+                const oldId = localStorage.getItem('editId')
                 for (let i = 0; i < usersList.length; i++) {
                     if (usersList[i].Id === oldId) {
-                        newUser.Id=oldId///Because I do not want new id I will take the old one
+                        newUser.Id = oldId///Because I do not want new id I will take the old one
                         usersList.splice(i, 1, newUser)
                     }
                 }
                 localStorage.removeItem('editId')
                 submitBtn.textContent = 'Submit'
             }
-            else{
-                usersList.push(newUser)    
+            else {
+                usersList.push(newUser)
             }
-            localStorage.setItem("array", JSON.stringify(usersList)); 
+            // localStorage.setItem("array", JSON.stringify(usersList)); 
             displayUsers()
             firstName.value = ''
             lastName.value = ''
@@ -107,7 +106,7 @@ function Validateform() {
             userError.innerHTML = ''
             emailError.innerHTML = '<div class="text-danger error">The email is not valid</div>'
             email.value = ''
-        } else if(notValidateUser(email.value)){
+        } else if (!ValidateUser(email.value)) {
             firstNameError.innerHTML = ''
             lastNameError.innerHTML = ''
             emailError.innerHTML = ''
@@ -145,8 +144,8 @@ output.addEventListener('click', (e) => {
     // Delete user from the list or change the information of the user
     if (button.textContent === 'Delete') {
         usersList = usersList.filter(user => user.Id !== e.target.parentNode.parentNode.id)
-        localStorage.removeItem('array')
-        localStorage.setItem("array", JSON.stringify(usersList));
+        // localStorage.removeItem('array')
+        // localStorage.setItem("array", JSON.stringify(usersList));
         displayUsers()
     }
     //Edit user in the list
@@ -154,21 +153,21 @@ output.addEventListener('click', (e) => {
         usersList.forEach(user => {
             if (user.Id === e.target.parentNode.parentNode.id) {
 
-                firstName.value= user.FirstName
+                firstName.value = user.FirstName
                 lastName.value = user.LastName
                 email.value = user.Email
-                localStorage.setItem('editId',user.Id)
-                submitBtn.textContent = 'Save' 
-                button.textContent='Ignore'
-                button.classList='btn  px-3 ms-4 btn-success'    
+                localStorage.setItem('editId', user.Id)
+                submitBtn.textContent = 'Save'
+                button.textContent = 'Ignore'
+                button.classList = 'btn  px-3 ms-4 btn-success'
             }
         })
     }
     //Ignore editing and come back to the first state
-    else if (button.textContent === 'Ignore'){
-        button.textContent='Edit'
-        button.classList='btn px-3 ms-4 btn-info'
-        submitBtn.textContent = 'Submit' 
+    else if (button.textContent === 'Ignore') {
+        button.textContent = 'Edit'
+        button.classList = 'btn px-3 ms-4 btn-info'
+        submitBtn.textContent = 'Submit'
         firstName.value = ''
         lastName.value = ''
         email.value = ''
