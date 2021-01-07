@@ -77,7 +77,7 @@ function Validateform() {
             else {
                 usersList.push(newUser)
             }
-            // localStorage.setItem("array", JSON.stringify(usersList)); 
+             localStorage.setItem("array", JSON.stringify(usersList)); 
             displayUsers()
             firstName.value = ''
             lastName.value = ''
@@ -144,8 +144,8 @@ output.addEventListener('click', (e) => {
     // Delete user from the list or change the information of the user
     if (button.textContent === 'Delete') {
         usersList = usersList.filter(user => user.Id !== e.target.parentNode.parentNode.id)
-        // localStorage.removeItem('array')
-        // localStorage.setItem("array", JSON.stringify(usersList));
+         localStorage.removeItem('array')
+         localStorage.setItem("array", JSON.stringify(usersList));
         displayUsers()
     }
     //Edit user in the list
@@ -174,4 +174,7 @@ output.addEventListener('click', (e) => {
     }
 })
 
-
+onload=()=>{ 
+     usersList = JSON.parse(localStorage.getItem("array"));
+    displayUsers()
+}
