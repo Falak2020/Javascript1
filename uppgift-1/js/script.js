@@ -6,15 +6,16 @@ const lasName = document.querySelector('#lastName')
 const email = document.querySelector('#email')
 const submitBtn = document.querySelector('#submitBtn')
 const output = document.querySelector('#users')
-const result = document.querySelector('#result')
+// const result = document.querySelector('#result')
 const firstNameError = document.querySelector('#firstNameError')
 const lastNameError = document.querySelector('#lastNameError')
 const emailError = document.querySelector('#emailError')
-const idError = document.querySelector('#idError')
-const deletBtn = document.querySelector('#deleteBtn')
-const edit = document.querySelector('#editBtn')
+// const idError = document.querySelector('#idError')
+// const deletBtn = document.querySelector('#deleteBtn')
+// const edit = document.querySelector('#editBtn')
 const userError = document.querySelector('#userError')
 let array=[]
+
 // Functions 
 
 onload=()=>{ 
@@ -37,21 +38,23 @@ function ValidateEmail(string) {
     }else return false     
 }
 // Two users must not have the same email
-function ValidateUser(newUserEmail) {
+function notValidateUser(newUserEmail) {
     for (let j = 0; j < usersList.length; j++) {
         if(submitBtn.textContent==='Submit')
         {
-            if ( usersList[j].Email === newUserEmail)
+            if ( usersList[j].Email.toString === newUserEmail.toString){
             return true
+            console.log('hej')
+            }   
         else
             return false
-        }else
+        }else  if(submitBtn.textContent==='Save')
         return false  
     }
 }
 function Validateform() {
     if (firstName.value !== '' && lasName.value !== '' && email.value !== '') {
-        if (firstName.value.length >= 3 && lasName.value.length >= 3 && ValidateEmail(email.value) && !ValidateUser(email.value)) {
+        if (firstName.value.length >= 3 && lasName.value.length >= 3 && ValidateEmail(email.value) && !notValidateUser(email.value)) {
             firstName.classList.remove('is-invalid')
             lastName.classList.remove('is-invalid')
             email.classList.remove('is-invalid')
@@ -61,12 +64,8 @@ function Validateform() {
                 LastName: lastName.value.charAt(0).toUpperCase()+lastName.value.substring(1),
                 Email: email.value
             }
-           
-            if (submitBtn.textContent == 'Save') {
-                // const inputid = document.getElementById('#idInput')
-                // const labelId = document.getElementById('#labelId')
+            if (submitBtn.textContent === 'Save') {
                 const oldId=localStorage.getItem('editId')
-                // console.log(myId)
                 for (let i = 0; i < usersList.length; i++) {
                     if (usersList[i].Id === oldId) {
                         newUser.Id=oldId///Because I do not want new id I will take the old one
@@ -89,29 +88,48 @@ function Validateform() {
             emailError.innerHTML = ''
             userError.innerHTML = ''
         } else if (firstName.value.length < 3) {
+            lastNameError.innerHTML = ''
+            emailError.innerHTML = ''
+            userError.innerHTML = ''
             firstName.classList.add('is-invalid')
             firstNameError.innerHTML = '<div class="text-danger error">The first name must be more than 2 character</div>'
             firstName.value = ''
         } else if (lastName.value.length < 3) {
+            firstNameError.innerHTML = ''
+            emailError.innerHTML = ''
+            userError.innerHTML = ''
             lastName.classList.add('is-invalid')
             lastNameError.innerHTML = '<div class="text-danger error">The last name must be more than 2 character</div>'
             lastName.value = ''
         } else if (!ValidateEmail(email.value)) {
+            firstNameError.innerHTML = ''
+            lastNameError.innerHTML = ''
+            userError.innerHTML = ''
             emailError.innerHTML = '<div class="text-danger error">The email is not valid</div>'
             email.value = ''
-        } else {
-            userError.innerHTML = '<div class="text-danger error">The user is already existed</div>'
-
+        } else if(notValidateUser(email.value)){
+            firstNameError.innerHTML = ''
+            lastNameError.innerHTML = ''
+            emailError.innerHTML = ''
+            userError.innerHTML = '<div class="text-danger error">The user is already exists</div>'
         }
-
     }
     else if (firstName.value === '') {
+        lastNameError.innerHTML = ''
+        emailError.innerHTML = ''
+        userError.innerHTML = ''
         firstName.classList.add('is-invalid')
         firstNameError.innerHTML = '<div class="text-danger error">please fill out this field</div>'
     } else if (lastName.value === '') {
+        firstNameError.innerHTML = ''
+        emailError.innerHTML = ''
+        userError.innerHTML = ''
         lastName.classList.add('is-invalid')
         lastNameError.innerHTML = '<div class="text-danger error">please fill out this field</div>'
     } else if (email.value === '') {
+        firstNameError.innerHTML = ''
+        lastNameError.innerHTML = ''
+        userError.innerHTML = ''
         email.classList.add('is-invalid')
         emailError.innerHTML = '<div class="text-danger error">please fill out this field</div>'
     }
@@ -155,7 +173,6 @@ output.addEventListener('click', (e) => {
         lastName.value = ''
         email.value = ''
     }
-
 })
 
 
