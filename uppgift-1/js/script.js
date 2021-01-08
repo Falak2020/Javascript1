@@ -1,3 +1,9 @@
+
+onload=()=>{ 
+    usersList = JSON.parse(localStorage.getItem("array"));
+   displayUsers()
+}
+
 // Variables
 let usersList = []
 const formId = document.querySelector('#formId')
@@ -174,7 +180,4 @@ output.addEventListener('click', (e) => {
     }
 })
 
-onload=()=>{ 
-     usersList = JSON.parse(localStorage.getItem("array"));
-    displayUsers()
-}
+
