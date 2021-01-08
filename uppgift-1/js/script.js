@@ -1,11 +1,20 @@
-
+let usersList = [] 
+let array=[]
 onload=()=>{ 
-    usersList = JSON.parse(localStorage.getItem("array"));
-   displayUsers()
+     
+    
+        usersList = JSON.parse(localStorage.getItem("array"));
+        if(usersList!=null)
+        {
+        console.log(usersList)
+        displayUsers()  
+        }
+        else 
+        usersList=[]
+         
 }
-
 // Variables
-let usersList = []
+
 const formId = document.querySelector('#formId')
 const firstName = document.querySelector('#firstName')
 const lasName = document.querySelector('#lastName')
@@ -20,9 +29,10 @@ const emailError = document.querySelector('#emailError')
 // const deletBtn = document.querySelector('#deleteBtn')
 // const edit = document.querySelector('#editBtn')
 const userError = document.querySelector('#userError')
-let array = []
+
 
 // Functions 
+
 
 // onload=()=>{ 
 //     usersList = JSON.parse(localStorage.getItem("array"));
@@ -30,6 +40,7 @@ let array = []
 // }
 // Veiw the user list
 const displayUsers = () => {
+      
     output.innerHTML = ''
     usersList.forEach(user => {
         output.innerHTML += `<div  id="${user.Id}"class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle"><a href="mailto:${user.Email}">${user.Email}</a> </div></div><div><button class="btn btn-danger px-3">Delete</button><button  class="btn btn-info px-3 ms-4">Edit</button></div></div>`
@@ -143,6 +154,7 @@ function Validateform() {
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault()
     Validateform()
+   
 })
 
 output.addEventListener('click', (e) => {
