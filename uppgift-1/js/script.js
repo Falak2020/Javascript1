@@ -1,44 +1,33 @@
+
+
+// Variables
 let usersList = [] 
 let array=[]
-onload=()=>{ 
-     
-    
-        usersList = JSON.parse(localStorage.getItem("array"));
-        if(usersList!=null)
-        {
-        console.log(usersList)
-        displayUsers()  
-        }
-        else 
-        usersList=[]
-         
-}
-// Variables
-
 const formId = document.querySelector('#formId')
 const firstName = document.querySelector('#firstName')
 const lasName = document.querySelector('#lastName')
 const email = document.querySelector('#email')
 const submitBtn = document.querySelector('#submitBtn')
 const output = document.querySelector('#users')
-// const result = document.querySelector('#result')
 const firstNameError = document.querySelector('#firstNameError')
 const lastNameError = document.querySelector('#lastNameError')
 const emailError = document.querySelector('#emailError')
-// const idError = document.querySelector('#idError')
-// const deletBtn = document.querySelector('#deleteBtn')
-// const edit = document.querySelector('#editBtn')
 const userError = document.querySelector('#userError')
 
 
 // Functions 
+onload=()=>{ 
+    usersList = JSON.parse(localStorage.getItem("array"));
+    if(usersList!=null)
+    {
+    console.log(usersList)
+    displayUsers()  
+    }
+    else 
+    usersList=[]
+     
+}
 
-
-// onload=()=>{ 
-//     usersList = JSON.parse(localStorage.getItem("array"));
-//     displayUsers()
-// }
-// Veiw the user list
 const displayUsers = () => {
       
     output.innerHTML = ''
