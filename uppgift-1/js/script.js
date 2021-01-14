@@ -20,12 +20,10 @@ onload=()=>{
     usersList = JSON.parse(localStorage.getItem("array"));
     if(usersList!=null)
     {
-    console.log(usersList)
     displayUsers()  
     }
     else 
-    usersList=[]
-     
+    usersList=[]     
 }
 
 const displayUsers = () => {
@@ -151,8 +149,8 @@ output.addEventListener('click', (e) => {
     // Delete user from the list or change the information of the user
     if (button.textContent === 'Delete') {
         usersList = usersList.filter(user => user.Id !== e.target.parentNode.parentNode.id)
-         localStorage.removeItem('array')
-         localStorage.setItem("array", JSON.stringify(usersList));
+        localStorage.removeItem('array')
+        localStorage.setItem("array", JSON.stringify(usersList));
         displayUsers()
     }
     //Edit user in the list
