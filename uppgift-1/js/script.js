@@ -1,8 +1,8 @@
 
 
 // Variables
-let usersList = [] 
-let array=[]
+let usersList = []
+let array = []
 const formId = document.querySelector('#formId')
 const firstName = document.querySelector('#firstName')
 const lastName = document.querySelector('#lastName')
@@ -15,14 +15,13 @@ const emailError = document.querySelector('#emailError')
 const userError = document.querySelector('#userError')
 
 // Functions 
-onload=()=>{ 
+onload = () => {
     usersList = JSON.parse(localStorage.getItem("array"));
-    if(usersList!=null)
-    {
-    displayUsers()  
+    if (usersList != null) {
+        displayUsers()
     }
-    else 
-    usersList=[]     
+    else
+        usersList = []
 }
 
 const displayUsers = () => {
@@ -32,30 +31,29 @@ const displayUsers = () => {
     })
 }
 //The email should not have ä,å,ö 
-function ValidateEmail(string) {
-    if(string===''){
+function ValidateEmail(newEmail) {
+    if (newEmail === '') {
         email.classList.add('is-invalid')
         emailError.innerHTML = '<div class="text-danger error">Please fill out this field</div>'
         return false
     }
-    if (!(string.includes('ä')) && !(string.includes('å')) && !(string.includes('ö')) && (string.indexOf('@') > 0)) {
-        if ((string.charAt(string.length - 4) != '.') && (string.charAt(string.length - 3) != '.')) {
+    if (!(newEmail.includes('ä')) && !(newEmail.includes('å')) && !(newEmail.includes('ö')) && (newEmail.indexOf('@') > 0)) {
+        if ((newEmail.charAt(newEmail.length - 4) != '.') && (newEmail.charAt(newEmail.length - 3) != '.')) {
             email.classList.add('is-invalid')
             emailError.innerHTML = '<div class="text-danger error">The email is not valid</div>'
             return false
         }
-        else{
+        else {
             email.classList.remove('is-invalid')
-            emailError.innerHTML=''
+            emailError.innerHTML = ''
             return true
-        }    
+        }
     }
-    else{
+    else {
         email.classList.add('is-invalid')
         emailError.innerHTML = '<div class="text-danger error">The email is not valid</div>'
         return false
     }
-    
 }
 // Two users must not have the same email
 function ValidateUser(newUserEmail) {
@@ -65,14 +63,14 @@ function ValidateUser(newUserEmail) {
             if (user.Email === newUserEmail)
                 userExisted = true
         })
-        if (userExisted === true){
+    if (userExisted === true) {
             userError.innerHTML = '<div class="text-danger error">The user is already exists</div>'
             return false
-        } 
-        else{
-            userError.innerHTML=''
+        }
+    else {
+            userError.innerHTML = ''
             return true
-        } 
+        }
     }
     else if (submitBtn.textContent === 'Save')
         return true
@@ -80,47 +78,44 @@ function ValidateUser(newUserEmail) {
 
 
 // -----------------------------------------------------
-const ValidateFirstName=(firstName)=>{
-    if(firstName.value!=='' && firstName.value.length>=3){
+const ValidateFirstName = (firstName) => {
+    if (firstName.value !== '' && firstName.value.length >= 3) {
         firstName.classList.remove('is-invalid')
-        firstNameError.innerHTML=''
+        firstNameError.innerHTML = ''
         return true
     }
-   
-    else if(firstName.value===''){
+    else if (firstName.value === '') {
         firstName.classList.add('is-invalid')
         firstNameError.innerHTML = '<div class="text-danger error">please fill out this field</div>'
         return false
     }
-    else if(firstName.value.length<3){
+    else if (firstName.value.length < 3) {
         firstName.classList.add('is-invalid')
         firstNameError.innerHTML = '<div class="text-danger error">The first name must be more than 2 character</div>'
-        firstName.value = ''
         return false
     }
 }
 // -----------------------------------------------------
-const ValidateLastName=(lastName)=>{
-    if(lastName.value!=='' && lastName.value.length>=3){
+const ValidateLastName = (lastName) => {
+    if (lastName.value !== '' && lastName.value.length >= 3) {
         lastName.classList.remove('is-invalid')
-        lastNameError.innerHTML=''
-        return true 
+        lastNameError.innerHTML = ''
+        return true
     }
-    else if(lastName.value===''){
+    else if (lastName.value === '') {
         lastName.classList.add('is-invalid')
-        lastNameError.innerHTML = '<div class="text-danger error">please fill out this field</div>'
+        lastNameError.innerHTML = '<div class="text-danger error">Please fill out this field</div>'
         return false
     }
-    else if(lastName.value.length<3){
+    else if (lastName.value.length < 3) {
         lastName.classList.add('is-invalid')
         lastNameError.innerHTML = '<div class="text-danger error">The last name must be more than 2 character</div>'
-        lastName.value = ''
         return false
     }
 }
 // Create new user or make change on existed user
 
-const createUser=(firstName,lastName,email)=>{
+const createUser = (firstName, lastName, email) => {
     let newUser = {
         Id: Date.now().toString(),
         FirstName: firstName.value.charAt(0).toUpperCase() + firstName.value.substring(1),
@@ -137,6 +132,7 @@ const createUser=(firstName,lastName,email)=>{
         }
         localStorage.removeItem('editId')
         submitBtn.textContent = 'Submit'
+        submitBtn.classList='btn  btn-block mb-4 btn-info'
     }
     else {
         usersList.push(newUser)
@@ -145,14 +141,14 @@ const createUser=(firstName,lastName,email)=>{
 // 
 // Submit Button Validate the all information and save the user list in a local storage
 submitBtn.addEventListener('click', (e) => {
-    e.preventDefault() 
-    if (ValidateFirstName(firstName)&& ValidateLastName(lastName) && ValidateEmail(email.value) && ValidateUser(email.value)) {
+    e.preventDefault()
+    if (ValidateFirstName(firstName) && ValidateLastName(lastName) && ValidateEmail(email.value) && ValidateUser(email.value)) {
         email.classList.remove('is-invalid')
-        createUser(firstName,lastName,email)
-        localStorage.setItem("array", JSON.stringify(usersList)); 
+        createUser(firstName, lastName, email)
+        localStorage.setItem("array", JSON.stringify(usersList));
         displayUsers()
         formId.reset()
-     } 
+    }
 })
 
 // Delete or edit
@@ -174,6 +170,7 @@ output.addEventListener('click', (e) => {
                 email.value = user.Email
                 localStorage.setItem('editId', user.Id)
                 submitBtn.textContent = 'Save'
+                submitBtn.classList='btn  btn-block mb-4 btn-success'
                 button.textContent = 'Ignore'
                 button.classList = 'btn  px-3 ms-4 btn-success'
             }
@@ -184,6 +181,7 @@ output.addEventListener('click', (e) => {
         button.textContent = 'Edit'
         button.classList = 'btn px-3 ms-4 btn-info'
         submitBtn.textContent = 'Submit'
+        submitBtn.classList='btn  btn-block mb-4 btn-info'
         firstName.value = ''
         lastName.value = ''
         email.value = ''
