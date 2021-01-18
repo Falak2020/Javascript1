@@ -163,6 +163,10 @@ submitBtn.addEventListener('click', (e) => {
 
 // Delete or edit
 output.addEventListener('click', (e) => {
+    firstNameError.innerHTML=''
+    lastNameError.innerHTML=''
+    emailError.innerHTML=''
+    userError.innerHTML=''
     const button = e.target
     // Delete user from the list or change the information of the user
     if (button.textContent === 'Delete') {
