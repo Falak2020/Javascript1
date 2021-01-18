@@ -30,7 +30,7 @@ const displayUsers = () => {
         output.innerHTML +=
        `<div  id="${user.Id}"class="bg-white border rounded p-2 d-md-flex justify-content-between align-items-center mt-1">
         <div><div class="displayName">${user.FirstName} ${user.LastName}</div>
-        <div class="emailStyle"><a href="mailto:${user.Email}">${user.Email}</a></div></div>
+        <div class="emailStyle mb-2 mb-md-0"><a href="mailto:${user.Email}">${user.Email}</a></div></div>
         <div><button class="btn btn-danger px-3">Delete</button>
              <button  class="btn btn-info px-3 ms-4">Edit</button></div></div>`
     })
