@@ -56,29 +56,38 @@ function ValidateEmail(newEmail) {
     }
     else {
         email.classList.add('is-invalid')
-        emailError.innerHTML = '<div class="text-danger error">The email is not valid,it contains ä,ö,å</div>'
+        emailError.innerHTML = '<div class="text-danger error">The email is not valid,it contains ä,ö,å or it is a text</div>'
         return false
     }
 }
 // Two users must not have the same email
 function ValidateUser(newUserEmail) {
-    let userExisted = false
+    let userExisted = false   //the user is uniq
     if (submitBtn.textContent === 'Submit') {
         usersList.forEach(user => {
             if (user.Email === newUserEmail)
                 userExisted = true
         })
-        if (userExisted === true) {
-            userError.innerHTML = '<div class="text-danger error">The user is already exists</div>'
-            return false
-        }
-        else {
-            userError.innerHTML = ''
-            return true
-        }
+       
     }
-    else if (submitBtn.textContent === 'Save')
+    else if (submitBtn.textContent === 'Save'){
+        usersList.forEach(user => {
+            if ((user.Email === newUserEmail)){
+                if(user.Id===localStorage.getItem('editId'))
+                userExisted= false
+                else userExisted=true
+            }
+         })
+    }
+    if (userExisted === true) {
+        userError.innerHTML = '<div class="text-danger error">The user is already exists</div>'
+        return false
+    }
+    else {
+        userError.innerHTML = ''
         return true
+    }
+       
 }
 
 // Validate first name
