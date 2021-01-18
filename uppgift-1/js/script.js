@@ -28,7 +28,7 @@ const displayUsers = () => {
     output.innerHTML = ''
     usersList.forEach(user => {
         output.innerHTML +=
-       `<div  id="${user.Id}"class="bg-white border rounded p-2 d-md-flex justify-content-between align-items-center mt-1">
+       `<div  id="${user.Id}"class="bg-white border shadow-lg rounded p-2 d-md-flex justify-content-between align-items-center mt-1">
         <div><div class="displayName">${user.FirstName} ${user.LastName}</div>
         <div class="emailStyle mb-2 mb-md-0"><a href="mailto:${user.Email}">${user.Email}</a></div></div>
         <div><button class="btn btn-danger px-3">Delete</button>
@@ -81,7 +81,7 @@ function ValidateUser(newUserEmail) {
         return true
 }
 
-
+// Validate first name
 // -----------------------------------------------------
 const ValidateFirstName = (firstName) => {
     if (firstName.value !== '' && firstName.value.length >= 3) {
@@ -100,6 +100,7 @@ const ValidateFirstName = (firstName) => {
         return false
     }
 }
+// Validate last name
 // -----------------------------------------------------
 const ValidateLastName = (lastName) => {
     if (lastName.value !== '' && lastName.value.length >= 3) {
