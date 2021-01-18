@@ -74,8 +74,9 @@ function ValidateUser(newUserEmail) {
         usersList.forEach(user => {
             if ((user.Email === newUserEmail)){
                 if(user.Id===localStorage.getItem('editId'))
-                userExisted= false
-                else userExisted=true
+                  userExisted= false
+                else 
+                  userExisted=true
             }
          })
     }
