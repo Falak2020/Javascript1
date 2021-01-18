@@ -27,7 +27,12 @@ onload = () => {
 const displayUsers = () => {
     output.innerHTML = ''
     usersList.forEach(user => {
-        output.innerHTML += `<div  id="${user.Id}"class="bg-white border rounded p-2 d-flex justify-content-between align-items-center mt-1"><div><div class="displayName">${user.FirstName} ${user.LastName}</div><div class="emailStyle"><a href="mailto:${user.Email}">${user.Email}</a> </div></div><div><button class="btn btn-danger px-3">Delete</button><button  class="btn btn-info px-3 ms-4">Edit</button></div></div>`
+        output.innerHTML +=
+       `<div  id="${user.Id}"class="bg-white border rounded p-2 d-md-flex justify-content-between align-items-center mt-1">
+        <div><div class="displayName">${user.FirstName} ${user.LastName}</div>
+        <div class="emailStyle"><a href="mailto:${user.Email}">${user.Email}</a></div></div>
+        <div><button class="btn btn-danger px-3">Delete</button>
+             <button  class="btn btn-info px-3 ms-4">Edit</button></div></div>`
     })
 }
 //The email should not have ä,å,ö 
@@ -51,7 +56,7 @@ function ValidateEmail(newEmail) {
     }
     else {
         email.classList.add('is-invalid')
-        emailError.innerHTML = '<div class="text-danger error">The email is not valid</div>'
+        emailError.innerHTML = '<div class="text-danger error">The email is not valid,it contains ä,ö,å</div>'
         return false
     }
 }
@@ -63,11 +68,11 @@ function ValidateUser(newUserEmail) {
             if (user.Email === newUserEmail)
                 userExisted = true
         })
-    if (userExisted === true) {
+        if (userExisted === true) {
             userError.innerHTML = '<div class="text-danger error">The user is already exists</div>'
             return false
         }
-    else {
+        else {
             userError.innerHTML = ''
             return true
         }
@@ -142,7 +147,11 @@ const createUser = (firstName, lastName, email) => {
 // Submit Button Validate the all information and save the user list in a local storage
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault()
-    if (ValidateFirstName(firstName) && ValidateLastName(lastName) && ValidateEmail(email.value) && ValidateUser(email.value)) {
+    let con1=ValidateFirstName(firstName)
+    let con2=ValidateLastName(lastName)
+    let con3=ValidateEmail(email.value)
+    let con4=ValidateUser(email.value)
+    if (con1 && con2&& con3 && con4) {
         email.classList.remove('is-invalid')
         createUser(firstName, lastName, email)
         localStorage.setItem("array", JSON.stringify(usersList));
@@ -172,7 +181,7 @@ output.addEventListener('click', (e) => {
                 submitBtn.textContent = 'Save'
                 submitBtn.classList='btn  btn-block mb-4 btn-success'
                 button.textContent = 'Ignore'
-                button.classList = 'btn  px-3 ms-4 btn-success'
+                button.classList = 'btn  px-2 ms-4 btn-success'
             }
         })
     }
