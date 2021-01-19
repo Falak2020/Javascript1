@@ -1,5 +1,4 @@
 
-
 // Variables
 let usersList = []
 let array = []
@@ -23,19 +22,19 @@ onload = () => {
     else
         usersList = []
 }
-
+// View the users list
 const displayUsers = () => {
     output.innerHTML = ''
     usersList.forEach(user => {
         output.innerHTML +=
-       `<div  id="${user.Id}"class="bg-white border shadow-lg rounded p-2 d-md-flex justify-content-between align-items-center mt-1">
+       `<div  id="${user.Id}" class="bg-white border shadow-lg rounded p-2 d-md-flex justify-content-between align-items-center mt-1">
         <div><div class="displayName">${user.FirstName} ${user.LastName}</div>
         <div class="emailStyle mb-2 mb-md-0"><a href="mailto:${user.Email}">${user.Email}</a></div></div>
         <div><button class="btn btn-danger px-3">Delete</button>
              <button  class="btn btn-info px-3 ms-4">Edit</button></div></div>`
     })
 }
-//The email should not have ä,å,ö 
+//The email should not have ä,å,ö or empty or normal text
 function ValidateEmail(newEmail) {
     if (newEmail === '') {
         email.classList.add('is-invalid')
@@ -67,8 +66,7 @@ function ValidateUser(newUserEmail) {
         usersList.forEach(user => {
             if (user.Email === newUserEmail)
                 userExisted = true
-        })
-       
+        }) 
     }
     else if (submitBtn.textContent === 'Save'){
         usersList.forEach(user => {
@@ -81,7 +79,7 @@ function ValidateUser(newUserEmail) {
          })
     }
     if (userExisted === true) {
-        userError.innerHTML = '<div class="text-danger error">The user is already exists</div>'
+        userError.innerHTML = '<div class="text-danger error">The user is already existed by this email ,please write another email</div>'
         return false
     }
     else {
@@ -178,7 +176,7 @@ output.addEventListener('click', (e) => {
     emailError.innerHTML=''
     userError.innerHTML=''
     const button = e.target
-    // Delete user from the list or change the information of the user
+    // Delete user from the list
     if (button.textContent === 'Delete') {
         usersList = usersList.filter(user => user.Id !== e.target.parentNode.parentNode.id)
         localStorage.removeItem('array')
