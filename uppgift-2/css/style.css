@@ -1,0 +1,49 @@
+*{
+    box-sizing: border-box;
+}
+html,body{
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+.header{
+    font-size: 2rem;
+}
+.title{
+    font-size: 1rem;
+}
+.line-throw{
+    text-decoration: line-through;
+}
+.bg-completed{
+    background-color:#b6e8f5;
+    color: blue;
+}
+.todo{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 2rem;
+}
+.text{
+   position: absolute;
+   z-index:1;
+   width:150px;
+   height: 150px;
+   bottom:50px;
+   right:-50px;
+   display: inline;
+   padding: 1rem;
+   text-align: center;
+}
+
+.positionCard{
+
+    position: relative;
+}
+.input-checkbox{
+    width:20px;
+    height:20px;
+    background-color: white
+}
+.checked{
+    background-color: yellow;
+}
