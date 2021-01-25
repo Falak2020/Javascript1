@@ -17,7 +17,7 @@ html,body{
 }
 .bg-completed{
     background-color:#b6e8f5;
-    color: blue;
+    color: rgb(131, 131, 238);
 }
 .todo{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -46,4 +46,7 @@ html,body{
 }
 .checked{
     background-color: yellow;
+}
+i{
+    font-size: 2rem;
 }

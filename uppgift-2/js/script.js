@@ -3,35 +3,37 @@ const input = document.querySelector('#inputId');
 const output = document.querySelector('#output');
 const error = document.querySelector('#error')
 let todosArray = [];
-const fetchTodos = async () => {
+// ***************************
+const fetchData = async () => {
     const res = await fetch('https://jsonplaceholder.typicode.com/todos??_start=0&_limit=10')
     const data = await res.json()
     todosArray = data
     listTodos(todosArray);
 }
-
-fetchTodos();
+// Bring the data
+fetchData();
 // create new card
 const newTodo = (todo) => {
-    let card = document.createElement('div');
+    // create div1
+    let card = document.createElement('div')
     card.id = todo.id
-    card.classList.add('card', 'p-4', 'my-3', 'shadow-lg', 'positionCard');
-    let innerCard = document.createElement('div');
-    innerCard.classList.add('d-flex', 'justify-content-between', 'align-items-center');
-    let col1 = document.createElement('div');
-    col1.classList.add();
+    card.classList.add('card', 'p-4', 'my-3', 'shadow-lg', 'positionCard')
+    // create inner card
+    let innerCard = document.createElement('div')
+    innerCard.classList.add('d-flex', 'justify-content-between', 'align-items-center')
+    // create checkbox och todos title
+    let firstElement = document.createElement('div');
     let checkInput = document.createElement('input')
     checkInput.type = 'checkbox'
     checkInput.classList.add('input-checkbox', 'form-check-input')
-    let title = document.createElement('h3');
-    title.classList.add('title', 'd-inline', 'ms-2');
+    let title = document.createElement('h3')
+    title.classList.add('title', 'd-inline', 'ms-2')
     title.innerText = todo.title;
-    // Draw line over todo which is completed and change their background
-
-    // ***************************************************************
-    let button = document.createElement('button');
-    button.classList.add('btn', 'btn-info', 'text-white');
-    button.innerText = 'Delete';
+    
+    // create delete button
+    let button = document.createElement('button')
+    button.classList.add('btn', 'btn-info', 'text-white')
+    button.innerText = 'Delete'
     button.addEventListener('click', (e) => {
         let checked = e.target.parentNode.firstChild.firstChild.checked//Iwant to get check box if it is true or not
         text = e.target.parentNode.firstChild.lastChild.innerText
@@ -43,6 +45,14 @@ const newTodo = (todo) => {
             popUp(card)
         }
     })
+    
+    firstElement.appendChild(checkInput)
+    firstElement.appendChild(title)
+    innerCard.appendChild(firstElement);
+    innerCard.appendChild(button);
+    card.appendChild(innerCard);
+    output.appendChild(card);
+    // Draw line over todo which is completed and change their background
     if (todo.completed) {
         checkInput.checked = true
         title.classList.add('line-throw')
@@ -57,13 +67,17 @@ const newTodo = (todo) => {
         button.classList.add('btn-info')
         button.classList.remove('btn-primary')
     }
-    col1.appendChild(checkInput)
-    col1.appendChild(title)
-    innerCard.appendChild(col1);
-    innerCard.appendChild(button);
-    card.appendChild(innerCard);
-    output.appendChild(card);
+    // ***************************************************************
 }
+
+//View the list of todos
+const listTodos = (todosArray) => {
+    output.innerHTML = '';
+    todosArray.forEach(todo => {
+        newTodo(todo);
+    })
+}
+
 // Create pop up message
 const popUp = (card) => {
     let popText = document.createElement('div')
@@ -78,13 +92,6 @@ const popUp = (card) => {
         popText.classList.add('d-none')
     })
 
-}
-//View the list of todos
-const listTodos = (todosArray) => {
-    output.innerHTML = '';
-    todosArray.forEach(todo => {
-        newTodo(todo);
-    })
 }
 
 const createTodo = (todoTitle) => {
@@ -153,6 +160,7 @@ output.addEventListener('click', e => {
 
         let checkedTodo = e.target.parentNode.parentNode.parentNode
         let deleteBtn = e.target.parentNode.nextSibling
+        
         if (e.target.checked) {
             todosArray.forEach(todo => {
                 if (todo.id == checkedTodo.id) {
@@ -173,7 +181,7 @@ output.addEventListener('click', e => {
                     checkedTodo.classList.remove('bg-completed')
                     checkedTodo.classList.add('bg-white')
                     deleteBtn.classList.remove('btn-primary')
-                    deleteBtn.classList.add('btn-info')
+                    deleteBtn.classList.add('btn-info')  
                 }
             })
         }
