@@ -3,6 +3,7 @@ const input = document.querySelector('#inputId');
 const output = document.querySelector('#output');
 const error = document.querySelector('#error')
 let todosArray = [];
+
 // ***************************
 const fetchData = async () => {
     const res = await fetch('https://jsonplaceholder.typicode.com/todos??_start=0&_limit=10')
@@ -25,10 +26,10 @@ const newTodo = (todo) => {
     let firstElement = document.createElement('div');
     let checkInput = document.createElement('input')
     checkInput.type = 'checkbox'
-    checkInput.classList.add('input-checkbox', 'form-check-input')
+    checkInput.classList.add('input-checkbox','form-check-input')
     let title = document.createElement('h3')
     title.classList.add('title', 'd-inline', 'ms-2')
-    title.innerText = todo.title;
+    title.innerText = todo.title
     
     // create delete button
     let button = document.createElement('button')
@@ -38,7 +39,7 @@ const newTodo = (todo) => {
         let checked = e.target.parentNode.firstChild.firstChild.checked//Iwant to get check box if it is true or not
         text = e.target.parentNode.firstChild.lastChild.innerText
         if (checked) {
-            todosArray = todosArray.filter(todo => (todo.id != e.target.parentNode.parentNode.id))
+             todosArray = todosArray.filter(todo => (todo.id != e.target.parentNode.parentNode.id))
             listTodos(todosArray)
         }
         else {
@@ -52,29 +53,31 @@ const newTodo = (todo) => {
     innerCard.appendChild(button);
     card.appendChild(innerCard);
     output.appendChild(card);
+
     // Draw line over todo which is completed and change their background
     if (todo.completed) {
         checkInput.checked = true
+        checkInput.classList.add('bg-success')
         title.classList.add('line-throw')
         card.classList.add('bg-completed')
         button.classList.remove('btn-info')
-        button.classList.add('btn-primary')
+        button.classList.add('btn-success')
     }
     else {
         checkInput.checked = false
         title.classList.remove('line-throw')
         card.classList.remove('bg-completed')
         button.classList.add('btn-info')
-        button.classList.remove('btn-primary')
+        button.classList.remove('btn-success')
     }
     // ***************************************************************
 }
 
 //View the list of todos
 const listTodos = (todosArray) => {
-    output.innerHTML = '';
+    output.innerHTML = ''
     todosArray.forEach(todo => {
-        newTodo(todo);
+        newTodo(todo)
     })
 }
 
@@ -94,23 +97,23 @@ const popUp = (card) => {
 
 }
 
-const createTodo = (todoTitle) => {
-    fetch('https://jsonplaceholder.typicode.com/todos', {
+const createTodo = async(todoTitle) => {
+  const  res= await fetch('https://jsonplaceholder.typicode.com/todos', {
         method: 'POST',
         headers: {
             'Content-type': 'application/json; charset=UTF-8'
         },
         body: JSON.stringify({
             title: todoTitle,
-            completed: false,
-
+            completed: false
         })
     })
-        .then(res => res.json())
-        .then(data => {
-            todosArray.unshift(data);
-            listTodos(todosArray);
-        })
+       const data= await res.json()
+       data.id=Date.now()
+       console.log(data)
+       todosArray.unshift(data)
+       listTodos(todosArray)
+        
 }
 
 //I do not want to repeat the same title 
@@ -169,7 +172,8 @@ output.addEventListener('click', e => {
                     e.target.parentNode.lastChild.classList.add('line-throw')
                     checkedTodo.classList.add('bg-completed')
                     deleteBtn.classList.remove('btn-info')
-                    deleteBtn.classList.add('btn-primary')
+                    deleteBtn.classList.add('btn-success')
+                    e.target.classList.add('bg-success')
                 }
             })
         }
@@ -180,14 +184,18 @@ output.addEventListener('click', e => {
                     e.target.parentNode.lastChild.classList.remove('line-throw')
                     checkedTodo.classList.remove('bg-completed')
                     checkedTodo.classList.add('bg-white')
-                    deleteBtn.classList.remove('btn-primary')
-                    deleteBtn.classList.add('btn-info')  
+                    deleteBtn.classList.remove('btn-success')
+                    deleteBtn.classList.add('btn-info')
+                    e.target.classList.remove('bg-success')
                 }
             })
         }
     }
 
 })
+
+
+
 
 
 
