@@ -4,7 +4,7 @@ const output = document.querySelector('#output');
 const error = document.querySelector('#error')
 const selectAll= document.querySelector('#select-all')
 let todosArray = [];
-let array= []
+let localArray= []
 
 // ***************************
 const fetchData = async () => {
@@ -199,7 +199,7 @@ output.addEventListener('click', e => {
 // ******************************************************
 
 const checkAll=(todosArray)=>{
-    localStorage.setItem("array", JSON.stringify(todosArray));
+    localStorage.setItem("localArray", JSON.stringify(todosArray));
     todosArray.forEach(todo=>{
 
         todo.completed=true;   
@@ -215,7 +215,7 @@ const checkAll=(todosArray)=>{
          }
          else if (!(e.target.checked)){
             e.target.parentNode.nextElementSibling.classList.add('btn-light','disabled')
-            todosArray = JSON.parse(localStorage.getItem("array"));
+            todosArray = JSON.parse(localStorage.getItem("localArray"));
             listTodos(todosArray)
         }     
     }
