@@ -2,13 +2,16 @@ const form = document.querySelector('#formId');
 const input = document.querySelector('#inputId');
 const output = document.querySelector('#output');
 const error = document.querySelector('#error')
+const selectAll= document.querySelector('#select-all')
 let todosArray = [];
+let array= []
 
 // ***************************
 const fetchData = async () => {
     const res = await fetch('https://jsonplaceholder.typicode.com/todos??_start=0&_limit=10')
     const data = await res.json()
     todosArray = data
+    array = data
     listTodos(todosArray);
 }
 // Bring the data
@@ -33,7 +36,7 @@ const newTodo = (todo) => {
     
     // create delete button
     let button = document.createElement('button')
-    button.classList.add('btn', 'btn-info', 'text-white')
+    button.classList.add('btn', 'btn-light', 'text-dark','border')
     button.innerText = 'Delete'
     button.addEventListener('click', (e) => {
         let checked = e.target.parentNode.firstChild.firstChild.checked//Iwant to get check box if it is true or not
@@ -60,15 +63,15 @@ const newTodo = (todo) => {
         checkInput.classList.add('bg-success')
         title.classList.add('line-throw')
         card.classList.add('bg-completed')
-        button.classList.remove('btn-info')
-        button.classList.add('btn-success')
+        button.classList.remove('btn-light')
+        button.classList.add('btn-success','text-white')
     }
     else {
         checkInput.checked = false
-        title.classList.remove('line-throw')
-        card.classList.remove('bg-completed')
-        button.classList.add('btn-info')
-        button.classList.remove('btn-success')
+        // title.classList.remove('line-throw')
+        // card.classList.remove('bg-completed')
+        // button.classList.add('btn-info')
+        // button.classList.remove('btn-success')
     }
     // ***************************************************************
 }
@@ -110,7 +113,6 @@ const createTodo = async(todoTitle) => {
     })
        const data= await res.json()
        data.id=Date.now()
-       console.log(data)
        todosArray.unshift(data)
        listTodos(todosArray)
         
@@ -163,7 +165,6 @@ output.addEventListener('click', e => {
 
         let checkedTodo = e.target.parentNode.parentNode.parentNode
         let deleteBtn = e.target.parentNode.nextSibling
-        
         if (e.target.checked) {
             todosArray.forEach(todo => {
                 if (todo.id == checkedTodo.id) {
@@ -174,6 +175,7 @@ output.addEventListener('click', e => {
                     deleteBtn.classList.remove('btn-info')
                     deleteBtn.classList.add('btn-success')
                     e.target.classList.add('bg-success')
+                    
                 }
             })
         }
@@ -190,12 +192,46 @@ output.addEventListener('click', e => {
                 }
             })
         }
+        listTodos(todosArray)
     }
-
 })
+// ******************************************************'
+// ******************************************************
 
+const checkAll=(todosArray)=>{
+    localStorage.setItem("array", JSON.stringify(todosArray));
+    todosArray.forEach(todo=>{
 
-
+        todo.completed=true;   
+    })
+    listTodos(todosArray)
+}
+ selectAll.addEventListener('click',(e)=>{
+     if(e.target.type=='checkbox'){
+         if(e.target.checked){
+            checkAll(todosArray)
+            e.target.parentNode.nextElementSibling.classList.remove('btn-light','disabled')
+            e.target.parentNode.nextElementSibling.classList.add('btn-success','active')   
+         }
+         else if (!(e.target.checked)){
+            e.target.parentNode.nextElementSibling.classList.add('btn-light','disabled')
+            todosArray = JSON.parse(localStorage.getItem("array"));
+            listTodos(todosArray)
+        }     
+    }
+    else{
+        if(e.target.type=='submit'){
+           let checkedAll=e.target.parentNode.firstChild.nextElementSibling.firstChild.nextSibling
+            if(checkedAll.checked){
+                todosArray=[]
+                listTodos(todosArray)
+                checkedAll.checked=false
+                e.target.classList.add('btn-light','disabled')
+            }
+            
+        }
+    } 
+ })
 
 
 

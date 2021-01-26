@@ -6,8 +6,12 @@ html,body{
     margin: 0;
     padding: 0;
 }
+.bg{
+    background-color: #F2B691;
+    color: #8D6E63;
+}
 .header{
-    font-size: 2rem;
+    font-size: 2rem; 
 }
 .title{
     font-size: 1rem;
@@ -41,11 +45,10 @@ html,body{
 .input-checkbox{
     width:25px;
     height:25px;
-    background-color: white
+    background-color: white;
+    cursor: pointer;  
 }
-.bg-notcompleted{
-background-color: rgb(77, 136, 18);
-}
+
 i{
     font-size: 2rem;
 }
