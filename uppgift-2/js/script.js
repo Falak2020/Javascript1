@@ -10,11 +10,15 @@ let todosArray = [];
 
 // ***************************
 const fetchData = async () => {
-    const res = await fetch('https://jsonplaceholder.typicode.com/todos??_start=0&_limit=10')
-    const data = await res.json()
-    todosArray = data
-    array = data
-    listTodos(todosArray);
+    try {
+        const res = await fetch('https://jsonplaceholder.typicode.com/todos?_start=0 &_limit=10')
+        const data = await res.json()
+        console.log(data)
+        todosArray = data
+        listTodos(todosArray)
+    } catch (error) {
+        todosNumbers.innerText = 'Please check the link again'
+    }
 }
 // Bring the data
 fetchData();
@@ -31,22 +35,22 @@ const newTodo = (todo) => {
     let firstElement = document.createElement('div');
     let checkInput = document.createElement('input')
     checkInput.type = 'checkbox'
-    checkInput.classList.add('input-checkbox','form-check-input')
+    checkInput.classList.add('input-checkbox', 'form-check-input')
     let title = document.createElement('h3')
     title.classList.add('title', 'd-inline', 'ms-2')
     title.innerText = todo.title
-    
+
     // create delete button
     let button = document.createElement('button')
-    button.classList.add('btn', 'btn-light', 'text-dark','border')
+    button.classList.add('btn', 'btn-light', 'text-dark', 'border')
     button.innerText = 'Delete'
 
     // When I click on delete button
 
     button.addEventListener('click', (e) => {
         let checked = e.target.parentNode.firstChild.firstChild.checked//Iwant to get check box if it is true or not
-        let currentId=e.target.parentNode.parentNode.id
-        
+        let currentId = e.target.parentNode.parentNode.id
+
         if (checked) {
             todosArray = todosArray.filter(todo => (todo.id != currentId))
             listTodos(todosArray)
@@ -56,8 +60,8 @@ const newTodo = (todo) => {
         }
     })
     // Draw line over todo which is completed and change their background
-    
-    completedTodos(todo,checkInput,title,card,button)
+
+    completedTodos(todo, checkInput, title, card, button)
 
     // create my card 
     firstElement.appendChild(checkInput)
@@ -70,15 +74,15 @@ const newTodo = (todo) => {
     // ***************************************************************
 }
 // See if todo is completed and change its style
-const completedTodos=(todo,checkInput,title,card,button)=>{
+const completedTodos = (todo, checkInput, title, card, button) => {
     if (todo.completed) {
         checkInput.checked = true
         checkInput.classList.add('bg-success')
         title.classList.add('line-throw')
         card.classList.add('bg-completed')
         button.classList.remove('btn-light')
-        button.classList.add('btn-success','text-white')
-    }  
+        button.classList.add('btn-success', 'text-white')
+    }
 }
 
 // Create pop up message
@@ -98,7 +102,7 @@ const popUp = (card) => {
 
 //View the list of todos
 const listTodos = (todosArray) => {
-todosNumbers.innerText=`You have (${todosArray.length}) task in your list`
+    todosNumbers.innerText = `You have (${todosArray.length}) task in your list`
     output.innerHTML = ''
     todosArray.forEach(todo => {
         newTodo(todo)
@@ -107,8 +111,8 @@ todosNumbers.innerText=`You have (${todosArray.length}) task in your list`
 
 
 
-const createTodo = async(todoTitle) => {
-  const  res= await fetch('https://jsonplaceholder.typicode.com/todos', {
+const createTodo = async (todoTitle) => {
+    const res = await fetch('https://jsonplaceholder.typicode.com/todos', {
         method: 'POST',
         headers: {
             'Content-type': 'application/json; charset=UTF-8'
@@ -118,11 +122,11 @@ const createTodo = async(todoTitle) => {
             completed: false
         })
     })
-       const data = await res.json()
-       data.id = Date.now()
+    const data = await res.json()
+    data.id = Date.now()
     //    console.log(data)
-       todosArray.unshift(data)
-       listTodos(todosArray)    
+    todosArray.unshift(data)
+    listTodos(todosArray)
 }
 
 //I do not want to repeat the same title 
@@ -187,52 +191,52 @@ output.addEventListener('click', e => {
         //     })
         // }
         todosArray.forEach(todo => {
-              if (todo.id == checkedTodoId){
-                    todo.completed = !todo.completed
+            if (todo.id == checkedTodoId) {
+                todo.completed = !todo.completed
             }
-           })
+        })
         listTodos(todosArray)
     }
 })
 
 // ******************************************************'
-let localArray= []
+let localArray = []
 // ******************************************************
 
-const checkAll=(todosArray)=>{
+const checkAll = (todosArray) => {
     localStorage.setItem("localArray", JSON.stringify(todosArray));
-    todosArray.forEach(todo=>{
-        todo.completed=true;   
+    todosArray.forEach(todo => {
+        todo.completed = true;
     })
     listTodos(todosArray)
 }
 
- selectAll.addEventListener('click',(e)=>{
-     if(e.target.type=='checkbox'){
-         if(e.target.checked){
+selectAll.addEventListener('click', (e) => {
+    if (e.target.type == 'checkbox') {
+        if (e.target.checked) {
             checkAll(todosArray)
-            e.target.parentNode.nextElementSibling.classList.remove('btn-light','disabled')
-            e.target.parentNode.nextElementSibling.classList.add('btn-success','active')   
-         }
-         else if (!(e.target.checked)){
-            e.target.parentNode.nextElementSibling.classList.add('btn-light','disabled')
+            e.target.parentNode.nextElementSibling.classList.remove('btn-light', 'disabled')
+            e.target.parentNode.nextElementSibling.classList.add('btn-success', 'active')
+        }
+        else if (!(e.target.checked)) {
+            e.target.parentNode.nextElementSibling.classList.add('btn-light', 'disabled')
             todosArray = JSON.parse(localStorage.getItem("localArray"));
             listTodos(todosArray)
-        }     
-    }
-    else{
-        if(e.target.type=='submit'){
-           let checkedAll=e.target.parentNode.firstChild.nextElementSibling.firstChild.nextSibling
-            if(checkedAll.checked){
-                todosArray=[]
-                listTodos(todosArray)
-                checkedAll.checked=false
-                e.target.classList.add('btn-light','disabled')
-            }
-            
         }
-    } 
- })
+    }
+    else {
+        if (e.target.type == 'submit') {
+            let checkedAll = e.target.parentNode.firstChild.nextElementSibling.firstChild.nextSibling
+            if (checkedAll.checked) {
+                todosArray = []
+                listTodos(todosArray)
+                checkedAll.checked = false
+                e.target.classList.add('btn-light', 'disabled')
+            }
+
+        }
+    }
+})
 
 
 
