@@ -2,9 +2,11 @@ const form = document.querySelector('#formId');
 const input = document.querySelector('#inputId');
 const output = document.querySelector('#output');
 const error = document.querySelector('#error')
-const selectAll= document.querySelector('#select-all')
+const selectAll = document.querySelector('#select-all')
+const todosNumbers = document.querySelector('#todos-numbers')
+
 let todosArray = [];
-let localArray= []
+
 
 // ***************************
 const fetchData = async () => {
@@ -38,18 +40,26 @@ const newTodo = (todo) => {
     let button = document.createElement('button')
     button.classList.add('btn', 'btn-light', 'text-dark','border')
     button.innerText = 'Delete'
+
+    // When I click on delete button
+
     button.addEventListener('click', (e) => {
         let checked = e.target.parentNode.firstChild.firstChild.checked//Iwant to get check box if it is true or not
-        text = e.target.parentNode.firstChild.lastChild.innerText
+        let currentId=e.target.parentNode.parentNode.id
+        
         if (checked) {
-             todosArray = todosArray.filter(todo => (todo.id != e.target.parentNode.parentNode.id))
+            todosArray = todosArray.filter(todo => (todo.id != currentId))
             listTodos(todosArray)
         }
         else {
             popUp(card)
         }
     })
+    // Draw line over todo which is completed and change their background
     
+    completedTodos(todo,checkInput,title,card,button)
+
+    // create my card 
     firstElement.appendChild(checkInput)
     firstElement.appendChild(title)
     innerCard.appendChild(firstElement);
@@ -57,7 +67,10 @@ const newTodo = (todo) => {
     card.appendChild(innerCard);
     output.appendChild(card);
 
-    // Draw line over todo which is completed and change their background
+    // ***************************************************************
+}
+// See if todo is completed and change its style
+const completedTodos=(todo,checkInput,title,card,button)=>{
     if (todo.completed) {
         checkInput.checked = true
         checkInput.classList.add('bg-success')
@@ -65,23 +78,7 @@ const newTodo = (todo) => {
         card.classList.add('bg-completed')
         button.classList.remove('btn-light')
         button.classList.add('btn-success','text-white')
-    }
-    else {
-        checkInput.checked = false
-        // title.classList.remove('line-throw')
-        // card.classList.remove('bg-completed')
-        // button.classList.add('btn-info')
-        // button.classList.remove('btn-success')
-    }
-    // ***************************************************************
-}
-
-//View the list of todos
-const listTodos = (todosArray) => {
-    output.innerHTML = ''
-    todosArray.forEach(todo => {
-        newTodo(todo)
-    })
+    }  
 }
 
 // Create pop up message
@@ -91,14 +88,24 @@ const popUp = (card) => {
     let buttonOk = document.createElement('button');
     buttonOk.classList.add('btn', 'btn-success', 'py-2', 'text-center');
     buttonOk.textContent = 'OK'
-    popText.innerText = 'Not completed you can not delete this todo'
+    popText.innerText = 'Not completed you can not delete this task'
     popText.appendChild(buttonOk)
     card.appendChild(popText)
     buttonOk.addEventListener('click', (e) => {
         popText.classList.add('d-none')
     })
-
 }
+
+//View the list of todos
+const listTodos = (todosArray) => {
+todosNumbers.innerText=`You have (${todosArray.length}) task in your list`
+    output.innerHTML = ''
+    todosArray.forEach(todo => {
+        newTodo(todo)
+    })
+}
+
+
 
 const createTodo = async(todoTitle) => {
   const  res= await fetch('https://jsonplaceholder.typicode.com/todos', {
@@ -111,11 +118,11 @@ const createTodo = async(todoTitle) => {
             completed: false
         })
     })
-       const data= await res.json()
-       data.id=Date.now()
+       const data = await res.json()
+       data.id = Date.now()
+    //    console.log(data)
        todosArray.unshift(data)
-       listTodos(todosArray)
-        
+       listTodos(todosArray)    
 }
 
 //I do not want to repeat the same title 
@@ -155,57 +162,46 @@ form.addEventListener('submit', e => {
     if (validateInput(input)) {
         createTodo(input.value)
         input.value = ''
+        input.focus()
     }
-
 })
+
+// Check in check out
 
 output.addEventListener('click', e => {
 
     if (e.target.type === 'checkbox') {
-
-        let checkedTodo = e.target.parentNode.parentNode.parentNode
-        let deleteBtn = e.target.parentNode.nextSibling
+        let checkedTodoId = e.target.parentNode.parentNode.parentNode.id
         if (e.target.checked) {
             todosArray.forEach(todo => {
-                if (todo.id == checkedTodo.id) {
+                if (todo.id == checkedTodoId) {
                     todo.completed = true
-                    checkedTodo.classList.remove('bg-white')
-                    e.target.parentNode.lastChild.classList.add('line-throw')
-                    checkedTodo.classList.add('bg-completed')
-                    deleteBtn.classList.remove('btn-info')
-                    deleteBtn.classList.add('btn-success')
-                    e.target.classList.add('bg-success')
-                    
                 }
             })
         }
         else if (!(e.target.checked)) {
             todosArray.forEach(todo => {
-                if (todo.id == checkedTodo.id) {
+                if (todo.id == checkedTodoId) {
                     todo.completed = false
-                    e.target.parentNode.lastChild.classList.remove('line-throw')
-                    checkedTodo.classList.remove('bg-completed')
-                    checkedTodo.classList.add('bg-white')
-                    deleteBtn.classList.remove('btn-success')
-                    deleteBtn.classList.add('btn-info')
-                    e.target.classList.remove('bg-success')
                 }
             })
         }
         listTodos(todosArray)
     }
 })
+
 // ******************************************************'
+let localArray= []
 // ******************************************************
 
 const checkAll=(todosArray)=>{
     localStorage.setItem("localArray", JSON.stringify(todosArray));
     todosArray.forEach(todo=>{
-
         todo.completed=true;   
     })
     listTodos(todosArray)
 }
+
  selectAll.addEventListener('click',(e)=>{
      if(e.target.type=='checkbox'){
          if(e.target.checked){
