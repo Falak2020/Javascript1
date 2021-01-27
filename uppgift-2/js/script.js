@@ -172,20 +172,25 @@ output.addEventListener('click', e => {
 
     if (e.target.type === 'checkbox') {
         let checkedTodoId = e.target.parentNode.parentNode.parentNode.id
-        if (e.target.checked) {
-            todosArray.forEach(todo => {
-                if (todo.id == checkedTodoId) {
-                    todo.completed = true
-                }
-            })
-        }
-        else if (!(e.target.checked)) {
-            todosArray.forEach(todo => {
-                if (todo.id == checkedTodoId) {
-                    todo.completed = false
-                }
-            })
-        }
+        // if (e.target.checked) {
+        //     todosArray.forEach(todo => {
+        //         if (todo.id == checkedTodoId) {
+        //             todo.completed = true
+        //         }
+        //     })
+        // }
+        // else if (!(e.target.checked)) {
+        //     todosArray.forEach(todo => {
+        //         if (todo.id == checkedTodoId) {
+        //             todo.completed = false
+        //         }
+        //     })
+        // }
+        todosArray.forEach(todo => {
+              if (todo.id == checkedTodoId){
+                    todo.completed = !todo.completed
+            }
+           })
         listTodos(todosArray)
     }
 })
