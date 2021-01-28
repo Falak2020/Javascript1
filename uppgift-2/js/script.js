@@ -1,27 +1,31 @@
-const form = document.querySelector('#formId');
-const input = document.querySelector('#inputId');
-const output = document.querySelector('#output');
+// Variables
+const form = document.querySelector('#formId')
+const input = document.querySelector('#inputId')
+const output = document.querySelector('#output')
 const error = document.querySelector('#error')
 const selectAll = document.querySelector('#select-all')
 const todosNumbers = document.querySelector('#todos-numbers')
-
-let todosArray = [];
-
-
+const deleteAll = document.querySelector('#deleteAll')
+const url = 'https://jsonplaceholder.typicode.com/todos'
+let todosArray = []
 // ***************************
-const fetchData = async () => {
-    try {
-        const res = await fetch('https://jsonplaceholder.typicode.com/todos?_start=0 &_limit=10')
-        const data = await res.json()
-        console.log(data)
-        todosArray = data
-        listTodos(todosArray)
-    } catch (error) {
-        todosNumbers.innerText = 'Please check the link again'
-    }
+// Bring the data with index 1 and limit 10
+const fetchData = () => {
+    fetch(url + '?_start=0 &_limit=10')
+        .then(response => response.json())
+        .then(data => {
+            todosArray = data
+            listTodos(todosArray)
+        })
+        .catch((error) => {
+            todosNumbers.innerText = error
+            // console.error('Error:', error)
+        })
+
 }
-// Bring the data
-fetchData();
+
+// call the function
+fetchData()
 // create new card
 const newTodo = (todo) => {
     // create div1
@@ -61,7 +65,7 @@ const newTodo = (todo) => {
     })
     // Draw line over todo which is completed and change their background
 
-    completedTodos(todo, checkInput, title, card, button)
+    completedTodosStyle(todo, checkInput, title, card, button)
 
     // create my card 
     firstElement.appendChild(checkInput)
@@ -74,7 +78,7 @@ const newTodo = (todo) => {
     // ***************************************************************
 }
 // See if todo is completed and change its style
-const completedTodos = (todo, checkInput, title, card, button) => {
+const completedTodosStyle = (todo, checkInput, title, card, button) => {
     if (todo.completed) {
         checkInput.checked = true
         checkInput.classList.add('bg-success')
@@ -107,12 +111,12 @@ const listTodos = (todosArray) => {
     todosArray.forEach(todo => {
         newTodo(todo)
     })
+    completedAll(todosArray)
 }
 
-
-
+// create new todo
 const createTodo = async (todoTitle) => {
-    const res = await fetch('https://jsonplaceholder.typicode.com/todos', {
+    const response = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json; charset=UTF-8'
@@ -122,9 +126,8 @@ const createTodo = async (todoTitle) => {
             completed: false
         })
     })
-    const data = await res.json()
+    const data = await response.json()
     data.id = Date.now()
-    //    console.log(data)
     todosArray.unshift(data)
     listTodos(todosArray)
 }
@@ -156,6 +159,7 @@ const validateInput = (input) => {
         }
         else {
             error.innerHTML = 'There is another todo which has the same title'
+            input.classList.add('is-invalid')
             return false
         }
     }
@@ -173,7 +177,7 @@ form.addEventListener('submit', e => {
 // Check in check out
 
 output.addEventListener('click', e => {
-
+    j = 1
     if (e.target.type === 'checkbox') {
         let checkedTodoId = e.target.parentNode.parentNode.parentNode.id
         // if (e.target.checked) {
@@ -215,11 +219,11 @@ selectAll.addEventListener('click', (e) => {
     if (e.target.type == 'checkbox') {
         if (e.target.checked) {
             checkAll(todosArray)
-            e.target.parentNode.nextElementSibling.classList.remove('btn-light', 'disabled')
-            e.target.parentNode.nextElementSibling.classList.add('btn-success', 'active')
+            deleteAll.classList.remove('btn-light', 'disabled')
+            deleteAll.add('btn-success', 'active')
         }
         else if (!(e.target.checked)) {
-            e.target.parentNode.nextElementSibling.classList.add('btn-light', 'disabled')
+            deleteAll.classList.add('btn-light', 'disabled')
             todosArray = JSON.parse(localStorage.getItem("localArray"));
             listTodos(todosArray)
         }
@@ -227,18 +231,34 @@ selectAll.addEventListener('click', (e) => {
     else {
         if (e.target.type == 'submit') {
             let checkedAll = e.target.parentNode.firstChild.nextElementSibling.firstChild.nextSibling
-            if (checkedAll.checked) {
+            if (e.target.classList.contains('active')) {
                 todosArray = []
                 listTodos(todosArray)
                 checkedAll.checked = false
                 e.target.classList.add('btn-light', 'disabled')
             }
-
         }
     }
 })
+// see if all todos are completed
+const completedAll = (todosArray) => {
+    let ok=true
+    todosArray.forEach(todo => {
+        if (todo.completed == false) {
+            ok = false
+        }
 
-
+    })
+    if (ok == true) {
+        deleteAll.classList.remove('btn-light', 'disabled')
+        deleteAll.classList.add('btn-success','active')
+    }
+   else{
+    deleteAll.classList.remove('btn-success','active')
+    deleteAll.classList.add('btn-light', 'disabled')
+   
+   }
+}
 
 
 
