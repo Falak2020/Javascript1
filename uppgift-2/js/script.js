@@ -18,10 +18,8 @@ const fetchData = () => {
             listTodos(todosArray)
         })
         .catch((error) => {
-            todosNumbers.innerText = error
-            // console.error('Error:', error)
+            todosNumbers.innerText = error + ' could not get data '
         })
-
 }
 
 // call the function
@@ -32,10 +30,10 @@ const newTodo = (todo) => {
     let card = document.createElement('div')
     card.id = todo.id
     card.classList.add('card', 'p-4', 'my-3', 'shadow-lg', 'positionCard')
-    // create inner card
+    // create inner card div2
     let innerCard = document.createElement('div')
     innerCard.classList.add('d-flex', 'justify-content-between', 'align-items-center')
-    // create checkbox och todos title
+    // create checkbox och todos title div 3
     let firstElement = document.createElement('div');
     let checkInput = document.createElement('input')
     checkInput.type = 'checkbox'
@@ -106,7 +104,7 @@ const popUp = (card) => {
 
 //View the list of todos
 const listTodos = (todosArray) => {
-    todosNumbers.innerText = `You have (${todosArray.length}) task in your list`
+    todosNumbers.innerText = `You have (${todosArray.length}) tasks in your list`
     output.innerHTML = ''
     todosArray.forEach(todo => {
         newTodo(todo)
@@ -116,31 +114,37 @@ const listTodos = (todosArray) => {
 
 // create new todo
 const createTodo = async (todoTitle) => {
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: JSON.stringify({
-            title: todoTitle,
-            completed: false
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({
+                title: todoTitle,
+                completed: false
+            })
         })
-    })
-    const data = await response.json()
-    data.id = Date.now()
-    todosArray.unshift(data)
-    listTodos(todosArray)
+        const data = await response.json()
+        data.id = Date.now()
+        todosArray.unshift(data)
+        listTodos(todosArray)
+
+    }
+    catch (error) {
+        todosNumbers.innerText = error+' could not send the data ' 
+    }
 }
 
 //I do not want to repeat the same title 
-const todoTitleUniq = (input) => {
-    let uniq = true
+const todoTitleUnique = (input) => {
+    let unique = true
     todosArray.forEach(todo => {
         if (todo.title === input.value) {
-            uniq = false
+            unique = false
         }
     })
-    return uniq
+    return unique
 }
 
 // Validate input
@@ -152,7 +156,7 @@ const validateInput = (input) => {
         return false
     }
     else {
-        if (todoTitleUniq(input)) {
+        if (todoTitleUnique(input)) {
             error.innerHTML = ''
             input.classList.remove('is-invalid')
             return true
@@ -214,7 +218,6 @@ const checkAll = (todosArray) => {
     })
     listTodos(todosArray)
 }
-
 selectAll.addEventListener('click', (e) => {
     if (e.target.type == 'checkbox') {
         if (e.target.checked) {
@@ -242,7 +245,7 @@ selectAll.addEventListener('click', (e) => {
 })
 // see if all todos are completed
 const completedAll = (todosArray) => {
-    let ok=true
+    let ok = true
     todosArray.forEach(todo => {
         if (todo.completed == false) {
             ok = false
@@ -251,13 +254,13 @@ const completedAll = (todosArray) => {
     })
     if (ok == true) {
         deleteAll.classList.remove('btn-light', 'disabled')
-        deleteAll.classList.add('btn-success','active')
+        deleteAll.classList.add('btn-success', 'active')
     }
-   else{
-    deleteAll.classList.remove('btn-success','active')
-    deleteAll.classList.add('btn-light', 'disabled')
-   
-   }
+    else {
+        deleteAll.classList.remove('btn-success', 'active')
+        deleteAll.classList.add('btn-light', 'disabled')
+
+    }
 }
 
 
