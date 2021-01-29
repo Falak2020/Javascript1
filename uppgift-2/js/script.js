@@ -109,7 +109,7 @@ const listTodos = (todosArray) => {
     todosArray.forEach(todo => {
         newTodo(todo)
     })
-    completedAll(todosArray)
+    completedAll(todosArray)  //see if all todos are completed then activera (delet All) button
 }
 
 // create new todo
@@ -121,7 +121,6 @@ const createTodo = async (todoTitle) => {
                 'Content-type': 'application/json; charset=UTF-8'
             },
             body: JSON.stringify({
-                
                 title: todoTitle,
                 completed: false
             })
