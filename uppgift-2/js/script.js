@@ -121,6 +121,7 @@ const createTodo = async (todoTitle) => {
                 'Content-type': 'application/json; charset=UTF-8'
             },
             body: JSON.stringify({
+                
                 title: todoTitle,
                 completed: false
             })
